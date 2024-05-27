@@ -6,6 +6,7 @@ import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.background
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawWithCache
@@ -54,6 +55,23 @@ fun Modifier.createGradientAnimation(colors: List<Color>, gradientType: Gradient
             }
         }
 }
+
+fun Modifier.createGradientBackground(colors: List<Color>, gradientType: GradientType = GradientType.LINEAR): Modifier {
+    val gradient = when (gradientType) {
+        GradientType.LINEAR -> Brush.linearGradient(
+            colors
+        )
+        GradientType.RADIAL -> Brush.radialGradient(
+            colors
+        )
+        GradientType.SWEEP -> Brush.sweepGradient(
+            colors
+        )
+    }
+
+    return Modifier.background(gradient)
+}
+
 
 enum class GradientType {
     LINEAR,

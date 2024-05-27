@@ -32,7 +32,7 @@ kotlin {
     
     sourceSets {
         val desktopMain by getting
-        
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
@@ -44,13 +44,27 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(libs.chrynan.colorsCore)
+            implementation(libs.chrynan.colorsExtensions)
+            implementation(libs.chrynan.colorsTheme)
+            implementation(libs.chrynan.colorsCompose)
+            implementation(libs.chrynan.colorsPalette)
+            implementation(libs.alexzhirkevich.compottie)
+            implementation(libs.navigation.compose)
+            implementation(libs.composeResource)
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
         }
+
+
     }
 }
-
+compose.resources {
+    publicResClass = true
+    packageOfResClass = "com.ilustris.cosmos.resources"
+    generateResClass = always
+}
 android {
     namespace = "com.ilustris.cosmos"
     compileSdk = libs.versions.android.compileSdk.get().toInt()

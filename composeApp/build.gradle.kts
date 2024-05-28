@@ -65,6 +65,24 @@ compose.resources {
     packageOfResClass = "com.ilustris.cosmos.resources"
     generateResClass = always
 }
+
+compose.desktop {
+    application {
+        nativeDistributions {
+            targetFormats(TargetFormat.Dmg, TargetFormat.Msi, TargetFormat.Deb)
+            macOS {
+                iconFile.set(project.file("icon.icns"))
+            }
+            windows {
+                iconFile.set(project.file("icon.ico"))
+            }
+            linux {
+                iconFile.set(project.file("ic_app.png"))
+            }
+        }
+    }
+}
+
 android {
     namespace = "com.ilustris.cosmos"
     compileSdk = libs.versions.android.compileSdk.get().toInt()

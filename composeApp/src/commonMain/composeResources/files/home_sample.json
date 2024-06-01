@@ -1,0 +1,64 @@
+{
+    "latestNews": [
+        {
+            "title": "Teoria de Albert Einstein é comprovada",
+            "description": "A teoria da relatividade geral de Albert Einstein foi comprovada por cientistas que observaram uma estrela passando",
+            "thumbnailURL": "https://images.unsplash.com/photo-1634337071580-ab2032bf7e01?q=80&w=2493&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "Tempestade solar",
+            "description": "A tempestade solar que atingiu a Terra foi a mais forte dos últimos 50 anos",
+            "thumbnailURL": "https://images.unsplash.com/photo-1614642264762-d0a3b8bf3700?q=80&w=2680&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "James Webb descobre galáxia mais antiga já observada",
+            "description": "A galáxia JADES-GS-z14-0 foi vista pelo Telescópio Espacial James Webb como era 290 milhões de anos após o Big Bang, no início do Universo",
+            "thumbnailURL": "https://img.odcdn.com.br/wp-content/uploads/2024/05/JADES-GS-z14-0.jpg"
+        }
+
+    ],
+    "dayPic": {
+        "title": "Nebulosa",
+        "thumbnailURL": "https://images.unsplash.com/photo-1610296669228-602fa827fc1f?q=80&w=2575&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D",
+        "description": "Incrível imagem de uma nebulosa capturada por um telescópio."
+    },
+    "discoveryCards": [
+        {
+            "title": "Mundo da Lava",
+            "description": "Voce ja imaginou como seria o mundo da lava? Clique aqui e descubra!",
+            "thumbnailURL": "https://images.unsplash.com/photo-1553949345-eb786bb3f7ba?q=80&w=2340&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "Gigantes gelados",
+            "description": "Descubra mais sobre os gigantes gelados do nosso sistema solar!",
+            "thumbnailURL": "https://images.unsplash.com/photo-1639921884918-8d28ab2e39a4?q=80&w=2515&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+    ],
+    "educationCard": {
+        "title": "Planetas e constelações",
+        "description": "Descubra mais sobre os planetas do nosso sistema solar e as constelações do nosso universo!",
+        "thumbnailURL": "https://img.freepik.com/vetores-gratis/fundo-gradiente-da-galaxia_52683-141308.jpg?t=st=1717255840~exp=1717259440~hmac=7aa25cf13d83634e33c98be4370781ac483123f9c4ee1d0113fc9d3766232fd1&w=1060"
+    },
+    "gallery": [
+        {
+            "title": "Gigante vazio",
+            "description": "O que nos espera no espaço?",
+            "thumbnailURL": "https://images.unsplash.com/photo-1454789548928-9efd52dc4031?q=80&w=2360&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "A Odisséia",
+            "description": "Uma jornada pelo espaço e tempo",
+            "thumbnailURL": "https://images.unsplash.com/photo-1614121181207-4b6c334d353d?q=80&w=2352&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "Andromeda",
+            "description": "A galáxia mais próxima da nossa",
+            "thumbnailURL": "https://images.unsplash.com/photo-1614910767616-d11ce66fcb5d?q=80&w=2364&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        },
+        {
+            "title": "Nosso pequeno planeta",
+            "description": "Sera que somos os unicos?",
+            "thumbnailURL": "https://images.unsplash.com/photo-1614729939124-032f0b56c9ce?q=80&w=2525&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D"
+        }
+    ]
+}

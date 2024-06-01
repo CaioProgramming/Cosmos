@@ -7,6 +7,7 @@ plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsCompose)
     alias(libs.plugins.compose.compiler)
+    alias(libs.plugins.kotlinSerialization)
 }
 
 kotlin {
@@ -33,17 +34,28 @@ kotlin {
     sourceSets {
         val desktopMain by getting
 
+        iosMain.dependencies {
+            implementation(libs.ktor.client.darwin)
+
+        }
+
         androidMain.dependencies {
             implementation(compose.preview)
             implementation(libs.androidx.activity.compose)
+            implementation(libs.ktor.client.android)
+            implementation(libs.koin.android)
         }
         commonMain.dependencies {
+            implementation(libs.kotlinx.serialization)
             implementation(compose.runtime)
             implementation(compose.foundation)
             implementation(compose.material)
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            /*implementation(libs.androidx.compose.ui)
+            implementation(libs.androidx.compose.animation)
+            implementation(libs.androidx.compose.animation.core)*/
             implementation(libs.chrynan.colorsCore)
             implementation(libs.chrynan.colorsExtensions)
             implementation(libs.chrynan.colorsTheme)
@@ -52,9 +64,24 @@ kotlin {
             implementation(libs.alexzhirkevich.compottie)
             implementation(libs.navigation.compose)
             implementation(libs.composeResource)
+            implementation(libs.kotlinDateTime)
+            implementation(libs.bundles.ktor)
+            implementation(libs.ktor.client.content.negotiation)
+            implementation(libs.kotlin.serialization)
+            implementation(libs.media.kamel)
+            //implementation(libs.ktor.core)
+           // implementation(libs.ktor.cio)
+            //implementation(libs.media.kamel.image)
+
+            implementation(libs.koin.compose)
+            implementation(libs.koin.core)
+
         }
         desktopMain.dependencies {
             implementation(compose.desktop.currentOs)
+            implementation(libs.ktor.client.cio)
+
+
         }
 
 

@@ -12,12 +12,14 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
+import androidx.navigation.compose.rememberNavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
 import com.chrynan.colors.extension.CornflowerBlue
 import com.chrynan.colors.extension.MediumPurple
 import com.chrynan.colors.extension.Purple
+import features.home.ui.HomePage
 import features.login.LoginPage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
@@ -32,7 +34,7 @@ object SplashPage {
 fun SplashView(navController: NavController) {
 
     fun navigateToLogin() {
-        navController.navigate(LoginPage.tag)
+        navController.navigate(HomePage.tag)
     }
 
     Column(

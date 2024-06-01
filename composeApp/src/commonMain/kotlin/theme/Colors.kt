@@ -12,6 +12,7 @@ object Colors {
     val Black = Color(0xff000000)
 
     val DarkBackground = Color(0xff050522)
+    val DarkSurface = Color(0x401a1aa2)
     val LightBackground = Color(0xFFf2f2f2)
 
 }

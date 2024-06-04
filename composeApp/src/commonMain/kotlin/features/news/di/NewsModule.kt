@@ -5,7 +5,6 @@ import features.news.data.service.NewsMockServiceImpl
 import features.news.data.service.NewsService
 import features.news.data.usecase.NewsUseCase
 import features.news.data.usecase.NewsUseCaseImpl
-import features.news.details.di.NewsDetailsModule
 import features.news.presentation.NewsViewModel
 import org.koin.dsl.module
 import utils.MockHelper

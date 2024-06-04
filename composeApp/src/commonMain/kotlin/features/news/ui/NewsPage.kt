@@ -27,8 +27,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import animations.createGradientAnimation
-import features.news.details.NewsDetailsPage
-import features.news.details.NewsDetailsView
 import features.news.presentation.NewsState
 import features.news.presentation.NewsViewModel
 import features.news.ui.components.NewsCardPager
@@ -46,11 +44,6 @@ fun NewsView() {
     NavHost(newsNavigation, startDestination = NewsPage.tag) {
         composable(NewsPage.tag) {
             NewsList(newsNavigation = newsNavigation)
-        }
-
-        composable(NewsDetailsPage.tag) {
-            val id = it.arguments?.getString("id")
-            NewsDetailsView(id)
         }
     }
 }

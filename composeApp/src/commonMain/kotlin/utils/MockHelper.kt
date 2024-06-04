@@ -7,6 +7,7 @@ import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import service.ServiceResult
 
+@OptIn(ExperimentalResourceApi::class)
 class MockHelper {
 
     suspend inline fun <reified T> requestMock(fileName: String): ServiceResult<Exception, T> {

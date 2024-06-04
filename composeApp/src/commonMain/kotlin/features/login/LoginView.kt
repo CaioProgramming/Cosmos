@@ -1,5 +1,6 @@
 package features.login
 
+import LocalNavController
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -49,7 +50,7 @@ object LoginPage {
 }
 
 @Composable
-fun LoginView(navController: NavController) {
+fun LoginView(navController: NavController = LocalNavController.current) {
 
     fun navigateToHome() {
         navController.navigate(HomePage.tag) }

@@ -2,6 +2,7 @@
 
 package features.home.ui
 
+import LocalNavController
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.FastOutLinearInEasing
@@ -10,6 +11,7 @@ import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -38,6 +40,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
@@ -48,6 +51,7 @@ import features.home.ui.components.EducationCard
 import features.home.ui.components.ExploreCard
 import features.home.ui.components.GalleryCard
 import features.home.ui.components.ImageCard
+import features.news.ui.NewsPage
 import org.koin.compose.koinInject
 import theme.CosmosIcon
 import theme.getAppColors
@@ -59,10 +63,13 @@ object HomePage {
 }
 
 @Composable
-fun HomeView(viewModel: HomeViewModel = koinInject()) {
+fun HomeView(
+    viewModel: HomeViewModel = koinInject(),
+    navController: NavController = LocalNavController.current,
+) {
     val state = viewModel.state.collectAsState().value
     LazyVerticalGrid(
-        modifier = Modifier.animateContentSize(tween(500)).fillMaxSize().padding(vertical = 50.dp),
+        modifier = Modifier.animateContentSize(tween(500)).fillMaxSize(),
         columns = GridCells.Fixed(2),
     ) {
         item(span = { GridItemSpan(this.maxLineSpan) }) {
@@ -82,13 +89,24 @@ fun HomeView(viewModel: HomeViewModel = koinInject()) {
         if (state is HomeState.Success) {
             state.page.run {
                 item(span = { GridItemSpan(this.maxLineSpan) }) {
-                    Row(verticalAlignment = Alignment.CenterVertically, horizontalArrangement = Arrangement.SpaceBetween, modifier = Modifier.fillMaxWidth()) {
-                        Text("Últimas notícias", style = MaterialTheme.typography.h5, modifier = Modifier.padding(16.dp), textAlign = TextAlign.Start)
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        modifier = Modifier.clickable {
+                            navController.navigate(NewsPage.tag)
+                        }.fillMaxWidth(),
+                    ) {
+                        Text(
+                            "Últimas notícias",
+                            style = MaterialTheme.typography.h5,
+                            modifier = Modifier.padding(16.dp),
+                            textAlign = TextAlign.Start,
+                        )
                         Icon(
                             Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                             contentDescription = null,
                             tint = MaterialTheme.colors.onBackground,
-                            modifier = Modifier.padding(horizontal = 8.dp)
+                            modifier = Modifier.padding(horizontal = 8.dp),
                         )
                     }
                 }
@@ -97,7 +115,9 @@ fun HomeView(viewModel: HomeViewModel = koinInject()) {
                     HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth()) {
                         val new = latestNews.get(it)
                         new.run {
-                            CardItem(title, description, thumbnailURL)
+                            CardItem(title, description, thumbnailURL) {
+                                navController.navigate(NewsPage.tag)
+                            }
                         }
                     }
                 }
@@ -111,6 +131,14 @@ fun HomeView(viewModel: HomeViewModel = koinInject()) {
                     }
                 }
                 discoveryCards.run {
+                    item(span = { GridItemSpan((this.maxLineSpan))}) {
+                        Text(
+                            "Curiosidades",
+                            style = MaterialTheme.typography.h5,
+                            modifier = Modifier.padding(16.dp),
+                            textAlign = TextAlign.Start,
+                        )
+                    }
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
                         LazyRow {
                             items(count = size) { index ->
@@ -128,6 +156,13 @@ fun HomeView(viewModel: HomeViewModel = koinInject()) {
                     }
                 }
                 gallery.run {
+                    item(span = { GridItemSpan(this.maxLineSpan) }) {
+                        Text(
+                            "Galeria",
+                            style = MaterialTheme.typography.h5,
+                            modifier = Modifier.padding(16.dp),
+                            textAlign = TextAlign.Start)
+                    }
                     items(size) {
                         val item = get(it)
                         GalleryCard(item.title, item.description, item.thumbnailURL)
@@ -147,10 +182,11 @@ fun HomeAppBar(animating: Boolean = false) {
     TopAppBar(
         backgroundColor = Color.Transparent.toComposeColor(),
         navigationIcon = {
-            val sizeAnimation = animateDpAsState(
-                if (animating) 32.dp else 24.dp,
-                tween(1000, easing = FastOutLinearInEasing)
-            )
+            val sizeAnimation =
+                animateDpAsState(
+                    if (animating) 32.dp else 24.dp,
+                    tween(1000, easing = FastOutLinearInEasing),
+                )
 
             val iconModifier =
                 if (animating) {
@@ -165,7 +201,7 @@ fun HomeAppBar(animating: Boolean = false) {
                 Icons.Rounded.Search,
                 contentDescription = null,
                 tint = MaterialTheme.colors.onBackground,
-                modifier = Modifier.padding(horizontal = 16.dp)
+                modifier = Modifier.padding(horizontal = 16.dp),
             )
         },
         title = {},

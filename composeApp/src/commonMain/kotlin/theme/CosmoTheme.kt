@@ -1,5 +1,6 @@
 package theme
 
+import LocalNavController
 import androidx.compose.foundation.background
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.size
@@ -112,3 +113,8 @@ fun getAppBrush(): Brush {
 }
 
 
+@Composable
+fun popNav() {
+    val rootNav = LocalNavController.current
+    rootNav.popBackStack()
+}

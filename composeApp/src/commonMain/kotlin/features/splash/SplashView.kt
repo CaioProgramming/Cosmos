@@ -1,5 +1,6 @@
 package features.splash
 
+import LocalNavController
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,7 +13,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavController
-import androidx.navigation.compose.rememberNavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
@@ -20,7 +20,6 @@ import com.chrynan.colors.extension.CornflowerBlue
 import com.chrynan.colors.extension.MediumPurple
 import com.chrynan.colors.extension.Purple
 import features.home.ui.HomePage
-import features.login.LoginPage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -31,7 +30,7 @@ object SplashPage {
     val tag = "SplashPage"
 }
 @Composable
-fun SplashView(navController: NavController) {
+fun SplashView(navController: NavController = LocalNavController.current) {
 
     fun navigateToLogin() {
         navController.navigate(HomePage.tag)

@@ -33,7 +33,7 @@ fun EducationCard(
     Box(
         modifier =
             Modifier
-                .padding(horizontal = 16.dp, vertical = 8.dp)
+                .padding(16.dp)
                 .fillMaxWidth()
                 .height(170.dp)
                 .shapeRadius10()

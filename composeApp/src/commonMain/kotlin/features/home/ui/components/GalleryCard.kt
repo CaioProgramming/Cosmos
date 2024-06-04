@@ -15,7 +15,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import utils.fadingEdge
+import utils.fadingEdgeTop
 
 @Composable
 fun GalleryCard(
@@ -32,7 +32,7 @@ fun GalleryCard(
         KamelImage(
             resource = asyncPainterResource(data = thumbnail),
             contentDescription = title,
-            modifier = Modifier.fillMaxSize().fadingEdge(),
+            modifier = Modifier.fillMaxSize().fadingEdgeTop(),
             contentScale = ContentScale.Crop,
         )
         Column(modifier = Modifier.align(Alignment.BottomStart)) {

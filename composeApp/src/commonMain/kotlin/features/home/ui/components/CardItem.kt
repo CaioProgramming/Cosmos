@@ -1,6 +1,7 @@
 package features.home.ui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -23,6 +24,7 @@ fun CardItem(
     title: String,
     description: String,
     thumbnail: String,
+    onClick: (() -> Unit)? = null
 ) {
     Column(
         modifier =
@@ -30,8 +32,9 @@ fun CardItem(
                 .padding(16.dp)
                 .fillMaxWidth()
                 .shapeRadius15()
+                .clickable { onClick?.invoke() }
                 .background(MaterialTheme.colors.surface)
-                .padding(8.dp)
+
         ,
     ) {
         KamelImage(
@@ -46,12 +49,12 @@ fun CardItem(
         Text(
             text = title,
             style = MaterialTheme.typography.h6,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(16.dp),
         )
         Text(
             text = description,
             style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(8.dp),
+            modifier = Modifier.padding(horizontal = 8.dp),
             )
     }
 }

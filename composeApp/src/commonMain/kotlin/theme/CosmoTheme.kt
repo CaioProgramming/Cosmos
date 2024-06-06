@@ -46,6 +46,8 @@ private val LightColorScheme =
         onSurface = Colors.Black,
         onBackground = Colors.Black,
     )
+@Composable
+fun Modifier.defaultRadius() = shapeRadius15()
 
 @Composable
 fun cosmoTypography() =
@@ -62,6 +64,7 @@ fun CosmosTheme(
         colors = DarkColorScheme,
         content = content,
         typography = cosmoTypography(),
+
     )
 }
 

@@ -30,7 +30,6 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
-import androidx.compose.material.icons.rounded.KeyboardArrowRight
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,13 +43,14 @@ import androidx.navigation.NavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
+import features.events.ui.EventsPage
+import features.events.ui.components.EventCard
 import features.home.presentation.HomeState
 import features.home.presentation.HomeViewModel
 import features.home.ui.components.CardItem
 import features.home.ui.components.EducationCard
 import features.home.ui.components.ExploreCard
 import features.home.ui.components.GalleryCard
-import features.home.ui.components.ImageCard
 import features.news.ui.NewsPage
 import org.koin.compose.koinInject
 import theme.CosmosIcon
@@ -79,7 +79,7 @@ fun HomeView(
         item(span = { GridItemSpan(this.maxLineSpan) }) {
             AnimatedVisibility(visible = state != HomeState.Loading && state != null, enter = fadeIn(), exit = fadeOut()) {
                 Text(
-                    text = DateFormats.DATE_DAY_OF_MONTH_YEAR.getFormatted(),
+                    text = DateFormats.DD_OF_MMM_YYY.getFormatted(),
                     style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.W800),
                     modifier = Modifier.padding(16.dp),
                 )
@@ -92,9 +92,10 @@ fun HomeView(
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
-                        modifier = Modifier.clickable {
-                            navController.navigate(NewsPage.tag)
-                        }.fillMaxWidth(),
+                        modifier =
+                            Modifier.clickable {
+                                navController.navigate(NewsPage.tag)
+                            }.fillMaxWidth(),
                     ) {
                         Text(
                             "Últimas notícias",
@@ -121,17 +122,50 @@ fun HomeView(
                         }
                     }
                 }
-                dayPic.run {
+                events.run {
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
-                        ImageCard(
-                            title = title,
-                            url = thumbnailURL,
-                            description = description,
-                        )
+                        Row(
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.SpaceBetween,
+                            modifier =
+                            Modifier.clickable {
+                                navController.navigate(EventsPage.tag)
+                            }.fillMaxWidth(),
+                        ) {
+                            Text(
+                                "Próximos eventos",
+                                style = MaterialTheme.typography.h5,
+                                modifier = Modifier.padding(16.dp),
+                                textAlign = TextAlign.Start,
+                            )
+
+                            Icon(
+                                Icons.AutoMirrored.Rounded.KeyboardArrowRight,
+                                contentDescription = null,
+                                tint = MaterialTheme.colors.onBackground,
+                                modifier = Modifier.padding(horizontal = 8.dp),
+                            )
+                        }
+
                     }
+
+                    item(span = { GridItemSpan((this.maxLineSpan))}) {
+                        LazyRow {
+                            items(size) {
+                                val event = get(it)
+                                event.run {
+                                    EventCard(title, description, date, thumbnailURL) {
+                                        navController.navigate(EventsPage.tag)
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+
                 }
                 discoveryCards.run {
-                    item(span = { GridItemSpan((this.maxLineSpan))}) {
+                    item(span = { GridItemSpan((this.maxLineSpan)) }) {
                         Text(
                             "Curiosidades",
                             style = MaterialTheme.typography.h5,
@@ -161,7 +195,8 @@ fun HomeView(
                             "Galeria",
                             style = MaterialTheme.typography.h5,
                             modifier = Modifier.padding(16.dp),
-                            textAlign = TextAlign.Start)
+                            textAlign = TextAlign.Start,
+                        )
                     }
                     items(size) {
                         val item = get(it)

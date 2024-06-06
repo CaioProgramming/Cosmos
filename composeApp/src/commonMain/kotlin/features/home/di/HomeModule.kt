@@ -12,7 +12,7 @@ object HomeModule {
     @Composable
     fun modules() =
         module {
-            factory<HomeService> { HomeMockService() }
+            factory<HomeService> { HomeMockService(get()) }
             factory<HomeUseCase> { HomeUseCaseImpl(homeService = get()) }
 
             factory { HomeViewModel(get()) }

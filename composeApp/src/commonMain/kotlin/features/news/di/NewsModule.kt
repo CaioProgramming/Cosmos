@@ -14,7 +14,6 @@ object NewsModule {
     @Composable
     fun modules() = module {
 
-        single { MockHelper() }
         factory<NewsService> { NewsMockServiceImpl(get()) }
         factory<NewsUseCase> { NewsUseCaseImpl(get()) }
         factory { NewsViewModel(get()) }

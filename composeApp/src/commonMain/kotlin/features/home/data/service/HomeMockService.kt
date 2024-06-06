@@ -5,21 +5,13 @@ import features.home.data.model.HomePage
 import kotlinx.serialization.json.Json
 import org.jetbrains.compose.resources.ExperimentalResourceApi
 import service.ServiceResult
+import utils.MockHelper
 
 @OptIn(ExperimentalResourceApi::class)
-class HomeMockService : HomeService {
+class HomeMockService(private val mockHelper: MockHelper) : HomeService {
 
-   override suspend fun fetchHomePage(): ServiceResult<Exception, HomePage> {
-       return try {
-           val file = Res.readBytes(mockPath).decodeToString()
-           val homePage = Json.decodeFromString<HomePage>(file)
-           ServiceResult.Success(homePage)
-       } catch (e: Exception) {
-           e.printStackTrace()
-           ServiceResult.Error(e)
-       }
-   }
+   override suspend fun fetchHomePage(): ServiceResult<Exception, HomePage> = mockHelper.requestMock(mockPath)
 
 }
 
-private const val mockPath = "files/home_sample.json"
+private const val mockPath = "home_sample"

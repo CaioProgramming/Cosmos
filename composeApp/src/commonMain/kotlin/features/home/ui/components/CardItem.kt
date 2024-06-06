@@ -54,7 +54,7 @@ fun CardItem(
         Text(
             text = description,
             style = MaterialTheme.typography.subtitle1,
-            modifier = Modifier.padding(horizontal = 8.dp),
+            modifier = Modifier.padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
             )
     }
 }

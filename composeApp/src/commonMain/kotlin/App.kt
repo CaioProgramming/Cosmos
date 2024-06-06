@@ -11,6 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import di.CommonModule
+import features.events.ui.EventView
+import features.events.ui.EventsPage
 import features.home.ui.HomePage
 import features.home.ui.HomeView
 import features.login.LoginPage
@@ -58,6 +60,7 @@ enum class Pages(val route: String) {
     LOGIN(LoginPage.tag),
     Home(HomePage.tag),
     News(NewsPage.tag),
+    Events(EventsPage.tag)
 }
 
 @Composable
@@ -67,4 +70,5 @@ private fun Pages.getView() =
         LOGIN -> LoginView()
         Home -> HomeView()
         News -> NewsView()
+        Events -> EventView()
     }

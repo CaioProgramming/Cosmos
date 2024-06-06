@@ -75,6 +75,7 @@ kotlin {
 
             implementation(libs.koin.compose)
             implementation(libs.koin.core)
+            implementation(libs.composables.ui.menu)
 
         }
         desktopMain.dependencies {

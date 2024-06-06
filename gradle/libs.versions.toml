@@ -26,6 +26,7 @@ compottie = "1.1.2"
 koin = "3.4.3"
 koin-composeVersion = "1.0.4"
 kamel = "0.9.5"
+composables-ui-menu = "1.4.0"
 
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
@@ -71,6 +72,8 @@ chrynan-colorsTheme = { group = "com.chrynan.colors", name = "colors-theme", ver
 chrynan-colorsPalette = { group = "com.chrynan.colors", name = "colors-palette", version.ref = "chRyNaNColors" }
 chrynan-colorsCompose = { group = "com.chrynan.colors", name = "colors-compose", version.ref = "chRyNaNColors" }
 alexzhirkevich-Compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.ref = "compottie" }
+
+composables-ui-menu = { group = "com.composables.ui", name = "menu", version.ref = "composables-ui-menu" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

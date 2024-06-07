@@ -43,7 +43,7 @@ import com.ilustris.cosmos.resources.google_multicolor_24
 import com.ilustris.cosmos.resources.login_illust
 import features.home.ui.HomePage
 import org.jetbrains.compose.resources.painterResource
-import theme.Typo
+import theme.CosmosApp
 
 object LoginPage {
     val tag = "LoginPage"
@@ -81,7 +81,7 @@ fun LoginView(navController: NavController = LocalNavController.current) {
             style = MaterialTheme.typography.h2.copy(color = Color.White, fontWeight = FontWeight.Normal, letterSpacing = 8.sp),
             modifier = Modifier.fillMaxWidth().padding(bottom = 16.dp, top = 0.dp),
             textAlign = TextAlign.Center,
-            fontFamily = Typo.headFontFamily(),
+            fontFamily = CosmosApp.Typo.headFontFamily(),
         )
 
         Text(

@@ -28,8 +28,7 @@ import features.events.presentation.EventState
 import features.events.presentation.EventViewModel
 import features.events.ui.components.EventLargeCard
 import org.koin.compose.koinInject
-import theme.CosmosIcon
-import theme.getAppColors
+import theme.CosmosApp
 
 object EventsPage {
     val tag = "EventPage"
@@ -54,13 +53,7 @@ fun EventView() {
 
         when (state) {
             is EventState.Error -> Text(text = "Ocorreu um erro ao carregar os eventos.")
-            EventState.Loading ->
-                CosmosIcon(
-                    modifier =
-                        Modifier.createGradientAnimation(
-                            getAppColors(),
-                        ),
-                )
+            EventState.Loading -> CosmosApp.Resources.icon(modifier = Modifier.createGradientAnimation())
             is EventState.Success -> {
                 val events = state.events
                 val pagerState = rememberPagerState(pageCount = { events.size })

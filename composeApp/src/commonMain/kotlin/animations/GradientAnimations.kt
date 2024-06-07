@@ -14,11 +14,11 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.graphics.graphicsLayer
+import theme.CosmosApp
 
 @Composable
-fun Modifier.createGradientAnimation(colors: List<Color>, gradientType: GradientType = GradientType.LINEAR): Modifier {
+fun Modifier.createGradientAnimation(colors: List<Color> = CosmosApp.Colors.themeColors(), gradientType: GradientType = GradientType.LINEAR): Modifier {
     val infiniteTransition = rememberInfiniteTransition()
     val offsetAnimation =
         infiniteTransition.animateFloat(

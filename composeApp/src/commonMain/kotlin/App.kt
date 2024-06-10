@@ -1,4 +1,3 @@
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.Scaffold
@@ -15,8 +14,8 @@ import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
 import theme.CosmosApp
 
-
 val LocalNavController = compositionLocalOf<NavHostController> { error("NavController not found") }
+
 @Composable
 fun App() {
     CompositionLocalProvider(LocalNavController provides rememberNavController()) {
@@ -26,7 +25,10 @@ fun App() {
             }) {
                 loadKoinModules(CommonModule.fetchModules())
                 val navController = LocalNavController.current
-                Scaffold(bottomBar = { CosmosApp.Navigation.BottomNav(navController) }) {
+                Scaffold(
+                    // TODO: Add bottomBar
+                    // bottomBar = { CosmosApp.Navigation.BottomNav(navController) }
+                ) {
                     NavHost(
                         navController = navController,
                         startDestination = CosmosApp.Navigation.Pages.Splash.route,
@@ -41,5 +43,3 @@ fun App() {
         }
     }
 }
-
-

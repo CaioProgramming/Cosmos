@@ -72,30 +72,26 @@ fun HomeHeader(isLoading: Boolean) {
             .wrapContentHeight()
             .animateContentSize(tween(500)),
     ) {
-        if (isLoading) {
-            CosmosApp.Resources.animatedIcon(
-                modifier =
-                Modifier.align(Alignment.Center).size(24.dp)
-                    ,
-            )
-        } else {
-            TopAppBar(
-                title = {
+        TopAppBar(
+            title = {
+                if(isLoading) {
+                    CosmosApp.Resources.icon(modifier = Modifier.createGradientAnimation())
+                } else {
                     CosmosApp.Resources.icon()
-                },
-                actions = {
-                    Icon(
-                        Icons.Rounded.Search,
-                        contentDescription = null,
-                        tint = MaterialTheme.colors.onBackground,
-                        modifier = Modifier.padding(8.dp).size(24.dp),
-                    )
-                },
-                elevation = 0.dp,
-                backgroundColor = Color.Transparent,
-                contentColor = MaterialTheme.colors.onBackground,
-            )
-        }
+                }
+            },
+            actions = {
+                Icon(
+                    Icons.Rounded.Search,
+                    contentDescription = null,
+                    tint = MaterialTheme.colors.onBackground,
+                    modifier = Modifier.padding(8.dp).size(24.dp),
+                )
+            },
+            elevation = 0.dp,
+            backgroundColor = Color.Transparent,
+            contentColor = MaterialTheme.colors.onBackground,
+        )
     }
 }
 

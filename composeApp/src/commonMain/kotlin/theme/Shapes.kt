@@ -19,10 +19,3 @@ import androidx.compose.ui.unit.dp
     @Composable
     fun Modifier.shapeRadius20() = clip(RoundedCornerShape(20.dp))
 
-
-object Shapes {
-    val small = 5.dp
-    val medium = 10.dp
-    val large = 15.dp
-    val extraLarge = 20.dp
-}

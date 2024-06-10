@@ -50,11 +50,10 @@ import com.ilustris.cosmos.resources.ic_binocular
 import com.ilustris.cosmos.resources.more_horizontal
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import io.ktor.http.ContentType.Text.Html
 import kotlinx.datetime.LocalDate
 import kotlinx.datetime.format
 import org.jetbrains.compose.resources.painterResource
-import theme.Shapes
+import theme.Corners
 import theme.defaultRadius
 import utils.CountryUtils
 import utils.DateFormats
@@ -67,16 +66,12 @@ fun EventCard(
     imageURL: String,
     onClick: () -> Unit = {},
 ) {
-    val parsedDate = LocalDate.parse(date)
-    var dateText by remember {
-        mutableStateOf("")
+    val dateText by remember {
+        val parsedDate = LocalDate.parse(date)
+        mutableStateOf(DateFormats.DD_MM.localDateFormat?.format(parsedDate) ?: "")
     }
 
-    LaunchedEffect(Unit) {
-        DateFormats.DD_MM.localDateFormat?.let {
-            dateText = parsedDate.format(it)
-        }
-    }
+
 
     Column(
         modifier =
@@ -84,7 +79,8 @@ fun EventCard(
                 .padding(16.dp)
                 .width(300.dp)
                 .defaultRadius()
-                .background(MaterialTheme.colors.surface).clickable {
+                .background(MaterialTheme.colors.surface)
+                .clickable {
                     onClick()
                 },
     ) {
@@ -114,15 +110,15 @@ fun EventCard(
                             RoundedCornerShape(
                                 topStart = 0.dp,
                                 topEnd = 0.dp,
-                                bottomStart = Shapes.large,
-                                bottomEnd = Shapes.large,
+                                bottomStart = Corners.large,
+                                bottomEnd = Corners.large,
                             ),
                         )
                         .background(MaterialTheme.colors.surface)
                         .padding(4.dp)
                         .background(
                             MaterialTheme.colors.primary,
-                            shape = RoundedCornerShape(Shapes.small),
+                            shape = RoundedCornerShape(Corners.small),
                         )
                         .padding(8.dp),
             )
@@ -153,22 +149,14 @@ fun EventLargeCard(
     countries: List<String>,
     extraInfo: List<String>,
 ) {
-    val parsedDate = LocalDate.parse(date)
-    var abreviatedDateText by remember {
-        mutableStateOf("")
-    }
-    var dateText by remember {
-        mutableStateOf("")
+
+    val dateText by remember {
+        val parsedDate = LocalDate.parse(date)
+        mutableStateOf(DateFormats.DD_OF_MMM.localDateFormat?.let {
+            parsedDate.format(it)
+        } ?: "")
     }
 
-    LaunchedEffect(Unit) {
-        DateFormats.DATE_DAY_MONTH.localDateFormat?.let {
-            abreviatedDateText = parsedDate.format(it)
-        }
-        DateFormats.DD_OF_MMM.localDateFormat?.let {
-            dateText = parsedDate.format(it)
-        }
-    }
 
     Column(
         modifier =
@@ -203,15 +191,15 @@ fun EventLargeCard(
                             RoundedCornerShape(
                                 topStart = 0.dp,
                                 topEnd = 0.dp,
-                                bottomStart = Shapes.medium,
-                                bottomEnd = Shapes.medium,
+                                bottomStart = Corners.medium,
+                                bottomEnd = Corners.medium,
                             ),
                         )
                         .background(MaterialTheme.colors.surface)
                         .padding(4.dp)
                         .background(
                             MaterialTheme.colors.primary,
-                            shape = RoundedCornerShape(Shapes.extraLarge),
+                            shape = RoundedCornerShape(Corners.extraLarge),
                         )
                         .padding(8.dp),
             )

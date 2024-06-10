@@ -16,15 +16,11 @@ import androidx.navigation.NavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
-import com.chrynan.colors.extension.CornflowerBlue
-import com.chrynan.colors.extension.MediumPurple
-import com.chrynan.colors.extension.Purple
 import features.home.ui.HomePage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import theme.CosmosIcon
-import theme.Typo
+import theme.CosmosApp
 
 object SplashPage {
     val tag = "SplashPage"
@@ -41,27 +37,15 @@ fun SplashView(navController: NavController = LocalNavController.current) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val purple = Color.Companion.Purple.toComposeColor()
-        val purpleMedium = Color.Companion.MediumPurple.toComposeColor()
-        val blue = Color.Companion.CornflowerBlue.toComposeColor()
+
         Row(verticalAlignment = Alignment.CenterVertically) {
-            CosmosIcon(
-                modifier =
-                Modifier.createGradientAnimation(
-                    listOf(
-                        MaterialTheme.colors.primary,
-                        blue,
-                        purpleMedium,
-                        purple,
-                    ),
-                ).clickable {
-                    navigateToLogin()
-                },
-            )
+            CosmosApp.Resources.largeIcon(modifier = Modifier.createGradientAnimation(CosmosApp.Colors.themeColors()).clickable {
+                navigateToLogin()
+            })
 
             Text(
                 text = "osmos",
-                style = MaterialTheme.typography.h4.copy(fontFamily = Typo.headFontFamily()),
+                style = MaterialTheme.typography.h4.copy(fontFamily = CosmosApp.Typo.headFontFamily()),
                 color = Color.White.toComposeColor())
         }
 

@@ -19,6 +19,7 @@ import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -31,8 +32,7 @@ import features.news.presentation.NewsState
 import features.news.presentation.NewsViewModel
 import features.news.ui.components.NewsCardPager
 import org.koin.compose.koinInject
-import theme.CosmosIcon
-import theme.getAppColors
+import theme.CosmosApp
 
 object NewsPage {
     val tag = "NewsPage"
@@ -66,15 +66,16 @@ fun NewsList(
             }
         NewsState.Loading ->
             Box(modifier = Modifier.fillMaxSize()) {
-                CosmosIcon(modifier = Modifier.createGradientAnimation(getAppColors()))
+                CosmosApp.Resources.largeIcon(
+                    modifier =
+                        Modifier
+                            .align(Alignment.Center).createGradientAnimation(),
+                )
             }
         is NewsState.Success -> {
             LazyColumn {
                 stickyHeader {
                     TopAppBar(
-                        actions = {
-                            CosmosIcon(modifier = Modifier.size(24.dp))
-                        },
                         backgroundColor = MaterialTheme.colors.background,
                         navigationIcon = {
                             Icon(
@@ -106,21 +107,6 @@ fun NewsList(
 
     LaunchedEffect(Unit) {
         viewModel.fetchNews()
-    }
-}
-
-@Composable
-fun newsStateComponent(newsState: NewsState) {
-    when (newsState) {
-        is NewsState.Loading -> {
-            CosmosIcon(modifier = Modifier.createGradientAnimation(getAppColors()))
-        }
-        is NewsState.Error -> {
-            Text("Erro ao carregar notícias")
-        }
-        is NewsState.Success -> {
-            Box(Modifier.size(0.dp))
-        }
     }
 }
 

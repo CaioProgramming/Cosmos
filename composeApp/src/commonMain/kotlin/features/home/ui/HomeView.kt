@@ -75,8 +75,8 @@ fun HomeHeader(isLoading: Boolean) {
         if (isLoading) {
             CosmosApp.Resources.animatedIcon(
                 modifier =
-                Modifier.size(24.dp)
-                    .align(Alignment.Center),
+                Modifier.align(Alignment.Center).size(24.dp)
+                    ,
             )
         } else {
             TopAppBar(

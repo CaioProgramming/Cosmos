@@ -1,8 +1,11 @@
 package theme
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInVertically
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -201,59 +204,62 @@ object CosmosApp {
         ) {
             val navBackStackEntry by navController.currentBackStackEntryAsState()
             val currentPage = navBackStackEntry?.destination?.route
-            BottomNavigation(
-                backgroundColor = Colors.LightBackground,
-                contentColor = Colors.Black,
-                modifier = Modifier.padding(Dimensions.padding16).shapeRadius20(),
-            ) {
-                Pages.entries.filter { it.showBottomNav }.forEach { page ->
-                    val selected = currentPage == page.route
-                    val color = Color.Black.toComposeColor().copy(alpha = 0.8f)
-                    val alpha = animateFloatAsState(if (selected) 1f else 0.5f, tween(300))
-                    val size = animateDpAsState(if (selected) 32.dp else 24.dp, tween(300))
-                    BottomNavigationItem(
-                        icon = {
-                            if (page == Pages.Profile) {
-                                if (userIcon == null) {
-                                    Image(
-                                        painterResource(Res.drawable.astronaut_placeholder),
-                                        contentScale = ContentScale.Crop,
-                                        contentDescription = null,
-                                        modifier =
+            AnimatedVisibility(currentPage != SplashPage.tag, enter = slideInVertically { -1 }, exit = scaleOut()) {
+                BottomNavigation(
+                    backgroundColor = Colors.LightBackground,
+                    contentColor = Colors.Black,
+                    modifier = Modifier.padding(Dimensions.padding16).shapeRadius20(),
+                ) {
+                    Pages.entries.filter { it.showBottomNav }.forEach { page ->
+                        val selected = currentPage == page.route
+                        val color = Color.Black.toComposeColor().copy(alpha = 0.8f)
+                        val alpha = animateFloatAsState(if (selected) 1f else 0.5f, tween(300))
+                        val size = animateDpAsState(if (selected) 32.dp else 24.dp, tween(300))
+                        BottomNavigationItem(
+                            icon = {
+                                if (page == Pages.Profile) {
+                                    if (userIcon == null) {
+                                        Image(
+                                            painterResource(Res.drawable.astronaut_placeholder),
+                                            contentScale = ContentScale.Crop,
+                                            contentDescription = null,
+                                            modifier =
                                             Modifier
                                                 .background(MaterialTheme.colors.secondary, CircleShape)
                                                 .size(size.value)
                                                 .clip(CircleShape)
                                                 .border(2.dp, color, CircleShape).alpha(alpha.value),
-                                    )
-                                } else {
-                                    KamelImage(
-                                        asyncPainterResource(userIcon),
-                                        contentDescription = null,
-                                        contentScale = ContentScale.Crop,
-                                        modifier =
+                                        )
+                                    } else {
+                                        KamelImage(
+                                            asyncPainterResource(userIcon),
+                                            contentDescription = null,
+                                            contentScale = ContentScale.Crop,
+                                            modifier =
                                             Modifier.size(
                                                 size.value,
                                             ).clip(CircleShape).border(2.dp, color, CircleShape).alpha(alpha.value),
+                                        )
+                                    }
+                                } else {
+                                    val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
+                                    Icon(
+                                        painterResource(currentIcon ?: Res.drawable.moon_24),
+                                        contentDescription = page.route,
+                                        tint = color,
+                                        modifier = Modifier.size(size.value).alpha(alpha.value),
                                     )
                                 }
-                            } else {
-                                val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
-                                Icon(
-                                    painterResource(currentIcon ?: Res.drawable.moon_24),
-                                    contentDescription = page.route,
-                                    tint = color,
-                                    modifier = Modifier.size(size.value).alpha(alpha.value),
-                                )
-                            }
-                        },
-                        selected = selected,
-                        onClick = {
-                            navController.navigate(page.route)
-                        },
-                    )
+                            },
+                            selected = selected,
+                            onClick = {
+                                navController.navigate(page.route)
+                            },
+                        )
+                    }
                 }
             }
+
         }
     }
 }

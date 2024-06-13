@@ -23,11 +23,11 @@ import theme.shapeRadius15
 @Composable
 fun ExploreCard( title: String,
                  description: String,
-                 thumbnail: String,) {
+                 thumbnail: String, modifier: Modifier = Modifier) {
 
     Column(
         modifier =
-        Modifier
+        modifier
             .padding(16.dp)
             .size(width = 250.dp, height = 350.dp)
             .padding(vertical = 8.dp)

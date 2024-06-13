@@ -53,6 +53,8 @@ kotlin {
             implementation(compose.ui)
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
+            implementation(compose.material3)
+            //implementation(libs.google.accompanist.navigation.animation)
             /*implementation(libs.androidx.compose.ui)
             implementation(libs.androidx.compose.animation)
             implementation(libs.androidx.compose.animation.core)*/
@@ -149,6 +151,8 @@ android {
 }
 dependencies {
     implementation(libs.androidx.material3.android)
+    implementation(libs.androidx.material3.desktop)
+    implementation(libs.androidx.navigation.common.ktx)
 }
 
 compose.desktop {

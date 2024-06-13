@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
-import features.home.ui.HomePage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
@@ -29,7 +28,12 @@ object SplashPage {
 fun SplashView(navController: NavController = LocalNavController.current) {
 
     fun navigateToLogin() {
-        navController.navigate(HomePage.tag)
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Login, navController)
+    }
+
+
+    fun navigateToHome() {
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
     }
 
     Column(
@@ -54,7 +58,7 @@ fun SplashView(navController: NavController = LocalNavController.current) {
     LaunchedEffect(Unit) {
         coroutineScope {
             delay(2000)
-            navigateToLogin()
+            navigateToHome()
         }
     }
 

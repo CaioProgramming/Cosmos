@@ -6,7 +6,6 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.slideInVertically
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.padding
@@ -19,17 +18,17 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NamedNavArgument
 import androidx.navigation.NavController
-import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.NavType
+import androidx.navigation.navArgument
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
@@ -39,24 +38,21 @@ import com.ilustris.cosmos.resources.heart_fill_24
 import com.ilustris.cosmos.resources.heart_outline_24
 import com.ilustris.cosmos.resources.home_24_fill
 import com.ilustris.cosmos.resources.home_24_outline
+import com.ilustris.cosmos.resources.ic_astronaut
 import com.ilustris.cosmos.resources.moon_24
 import com.ilustris.cosmos.resources.romauntgaolines
 import com.ilustris.cosmos.resources.sf_pro
+import features.discovery.ui.DiscoveryDetail
+import features.discovery.ui.DiscoveryView
 import features.events.ui.EventView
-import features.events.ui.EventsPage
-import features.home.ui.HomePage
 import features.home.ui.HomeView
-import features.login.LoginPage
 import features.login.LoginView
-import features.news.ui.NewsPage
 import features.news.ui.NewsView
-import features.splash.SplashPage
 import features.splash.SplashView
-import io.kamel.image.KamelImage
-import io.kamel.image.asyncPainterResource
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
+import service.emptyString
 import theme.CosmosApp.Typo.cosmoTypography
 
 object CosmosApp {
@@ -81,34 +77,23 @@ object CosmosApp {
 
         @Composable
         fun icon(
-            modifier: Modifier = Modifier,
+            modifier: Modifier = Modifier.size(32.dp),
             tint: androidx.compose.ui.graphics.Color = MaterialTheme.colors.onBackground,
         ) = Icon(
             painter = painterResource(Res.drawable.moon_24),
             contentDescription = null,
-            modifier = modifier.size(32.dp),
-            tint = tint,
+            modifier = modifier,
+            tint = MaterialTheme.colors.onBackground,
         )
 
         @Composable
         fun largeIcon(
             modifier: Modifier = Modifier,
             tint: androidx.compose.ui.graphics.Color = MaterialTheme.colors.onBackground,
-        ) = Icon(
-            painter = painterResource(Res.drawable.moon_24),
-            contentDescription = null,
-            modifier = modifier.size(64.dp),
-            tint = tint,
-        )
+        ) = icon(modifier.size(64.dp))
 
         @Composable
-        fun animatedIcon(modifier: Modifier) {
-            Icon(
-                painter = painterResource(Res.drawable.moon_24),
-                contentDescription = null,
-                modifier = modifier.createGradientAnimation(),
-            )
-        }
+        fun animatedIcon(modifier: Modifier = Modifier) = icon(modifier.createGradientAnimation())
 
         @Composable
         fun brush(): Brush {
@@ -178,88 +163,204 @@ object CosmosApp {
     }
 
     object Navigation {
+
+        fun navigateTo(page: Pages, navController: NavController) {
+            navController.navigate(page.pageConfig.route)
+        }
+
+        private const val navigationBasePath = "cosmos:/"
+
         data class IconConfig(val outlineIcon: DrawableResource, val filledIcon: DrawableResource)
 
+        data class PageConfig(
+            val title: String,
+            val key: String,
+            val arguments: List<NamedNavArgument> = emptyList(),
+        ) {
+
+            private fun argumentsPath() = arguments.joinToString("/") {
+                "{${it.name}}"
+            }
+
+            val route = "$navigationBasePath/$key/${argumentsPath()}"
+        }
+
         enum class Pages(
-            val route: String,
+            val pageConfig: PageConfig,
             val icon: IconConfig? = null,
             val showBottomNav: Boolean = false,
+            val showAppBar: Boolean = true,
             val view:
                 @Composable
-                () -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
+                (Any?) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
         ) {
-            Splash(SplashPage.tag, view = { SplashView() }),
-            Login(LoginPage.tag, view = { LoginView() }),
-            Favorites("/undefined", IconConfig(Res.drawable.heart_outline_24, Res.drawable.heart_fill_24), true),
-            Home(HomePage.tag, IconConfig(Res.drawable.home_24_outline, Res.drawable.home_24_fill), true, { HomeView() }),
-            Profile("/todo", null, true),
-            Events(EventsPage.tag, view = { EventView() }),
-            News(NewsPage.tag, view = { NewsView() }),
+            Splash(
+                PageConfig(
+                    emptyString(),
+                    "Splash",
+                ),
+                showAppBar = false,
+                showBottomNav = false,
+                view = { SplashView() },
+            ),
+            Login(
+                PageConfig(
+                    emptyString(),
+                    "Login",
+                ),
+                view = { LoginView() },
+            ),
+            Favorites(
+                PageConfig(
+                    "Favoritos",
+                    "Favorites",
+                ),
+                IconConfig(
+                    outlineIcon = Res.drawable.heart_outline_24,
+                    filledIcon = Res.drawable.heart_fill_24,
+                ),
+                true,
+            ),
+            Home(
+                PageConfig(
+                    title = "Cosmos",
+                    key = "Home",
+                ),
+                icon = IconConfig(Res.drawable.home_24_outline, Res.drawable.home_24_fill),
+                showBottomNav = true,
+                view = { HomeView() },
+            ),
+            Profile(
+                PageConfig(
+                    title = "Meu Perfil",
+                    key = "Profile",
+                ),
+                icon = IconConfig(Res.drawable.ic_astronaut, Res.drawable.astronaut_placeholder),
+                showBottomNav = true,
+            ),
+            Events(
+                PageConfig(
+                    "Eventos",
+                    "Events",
+                ),
+                view = { EventView() },
+            ),
+            News(
+                PageConfig(
+                    "Notícias",
+                    "News",
+                ),
+                view = { NewsView() },
+            ),
+            Discovery(
+                PageConfig(
+                    "Curiosidades",
+                    "Discovery",
+                ),
+                showBottomNav = true,
+                showAppBar = true,
+                view = { DiscoveryView() },
+            ),
+            DiscoveryDetail(
+                PageConfig(
+                    emptyString(),
+                    "detail-discover",
+                    arguments =
+                        listOf(
+                            navArgument("id") {
+                                type = NavType.StringType
+                            },
+                        ),
+                ),
+                showBottomNav = true,
+                showAppBar = false,
+                view = { DiscoveryDetail(it as String) },
+            ),
+            ;
+
+            companion object {
+                fun getFromKey(route: String?) : Pages? {
+                    route?.let {
+                        val page = entries.firstOrNull { page ->
+                            print("\nComparing route $it\n with ${page.pageConfig.key}")
+                            it.contains(page.pageConfig.key, true)
+                        }
+                        print("\nFound page => $page\n")
+                        return page
+                    } ?: run {
+                        print("\nNo page found\n")
+                        return null
+                    }
+                }
+            }
         }
 
         @Composable
         fun BottomNav(
-            navController: NavController,
+            currentPage: Pages?,
             userIcon: String? = null,
+            onNavigate: (Pages) -> Unit,
         ) {
-            val navBackStackEntry by navController.currentBackStackEntryAsState()
-            val currentPage = navBackStackEntry?.destination?.route
-            AnimatedVisibility(currentPage != SplashPage.tag, enter = slideInVertically { -1 }, exit = scaleOut()) {
+            AnimatedVisibility(
+                currentPage != Pages.Splash,
+                enter = slideInVertically { -1 },
+                exit = scaleOut(),
+            ) {
                 BottomNavigation(
                     backgroundColor = Colors.LightBackground,
                     contentColor = Colors.Black,
                     modifier = Modifier.padding(Dimensions.padding16).shapeRadius20(),
                 ) {
-                    Pages.entries.filter { it.showBottomNav }.forEach { page ->
-                        val selected = currentPage == page.route
+                    Pages.entries.filter { it.icon != null }.forEach { page ->
+                        val selected = currentPage == page
                         val color = Color.Black.toComposeColor().copy(alpha = 0.8f)
                         val alpha = animateFloatAsState(if (selected) 1f else 0.5f, tween(300))
                         val size = animateDpAsState(if (selected) 32.dp else 24.dp, tween(300))
                         BottomNavigationItem(
                             icon = {
-                                if (page == Pages.Profile) {
-                                    if (userIcon == null) {
-                                        Image(
-                                            painterResource(Res.drawable.astronaut_placeholder),
-                                            contentScale = ContentScale.Crop,
-                                            contentDescription = null,
-                                            modifier =
-                                            Modifier
-                                                .background(MaterialTheme.colors.secondary, CircleShape)
-                                                .size(size.value)
-                                                .clip(CircleShape)
-                                                .border(2.dp, color, CircleShape).alpha(alpha.value),
-                                        )
-                                    } else {
-                                        KamelImage(
-                                            asyncPainterResource(userIcon),
-                                            contentDescription = null,
-                                            contentScale = ContentScale.Crop,
-                                            modifier =
-                                            Modifier.size(
-                                                size.value,
-                                            ).clip(CircleShape).border(2.dp, color, CircleShape).alpha(alpha.value),
-                                        )
-                                    }
-                                } else {
-                                    val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
+                                val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
+                                if (page != Pages.Profile) {
                                     Icon(
                                         painterResource(currentIcon ?: Res.drawable.moon_24),
-                                        contentDescription = page.route,
+                                        contentDescription = page.pageConfig.title,
                                         tint = color,
                                         modifier = Modifier.size(size.value).alpha(alpha.value),
+                                    )
+                                } else {
+                                    val border =
+                                        if (selected) {
+                                            Modifier.border(
+                                                2.dp,
+                                                Resources.backGroundBrush(),
+                                                CircleShape,
+                                            )
+                                        } else {
+                                            Modifier.border(
+                                                2.dp,
+                                                MaterialTheme.colors.background.copy(alpha = 0.3f),
+                                                CircleShape,
+                                            )
+                                        }
+                                    Icon(
+                                        painterResource(Res.drawable.ic_astronaut),
+                                        contentDescription = page.pageConfig.title,
+                                        tint = Color.White.toComposeColor(),
+                                        modifier =
+                                            border
+                                                .background(Color.Black.toComposeColor().copy(alpha = 0.4f), CircleShape)
+                                                .size(size.value)
+                                                .clip(CircleShape),
                                     )
                                 }
                             },
                             selected = selected,
                             onClick = {
-                                navController.navigate(page.route)
+                                onNavigate(page)
                             },
                         )
                     }
                 }
             }
-
         }
     }
 }

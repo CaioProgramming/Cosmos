@@ -27,7 +27,9 @@ koin = "3.4.3"
 koin-composeVersion = "1.0.4"
 kamel = "0.9.5"
 composables-ui-menu = "1.4.0"
-
+google-accompanist-navigation-animation = "0.34.0"
+material3Desktop = "1.2.1"
+navigationCommonKtx = "2.7.7"
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -43,6 +45,8 @@ androidx-material3-android = { group = "androidx.compose.material3", name = "mat
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidx-compose" }
 androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "androidx-compose" }
 androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "androidx-compose" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "androidx-compose" }
+google-accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "google-accompanist-navigation-animation" }
 
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name= "navigation-compose", version.ref = "navigation-compose" }
 composeResource = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "composeResource" }
@@ -74,6 +78,8 @@ chrynan-colorsCompose = { group = "com.chrynan.colors", name = "colors-compose",
 alexzhirkevich-Compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.ref = "compottie" }
 
 composables-ui-menu = { group = "com.composables.ui", name = "menu", version.ref = "composables-ui-menu" }
+androidx-material3-desktop = { group = "androidx.compose.material3", name = "material3-desktop", version.ref = "material3Desktop" }
+androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
 
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }

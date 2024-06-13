@@ -1,14 +1,51 @@
+@file:OptIn(
+    ExperimentalMaterial3Api::class,
+    ExperimentalMaterial3Api::class,
+    ExperimentalAnimationApi::class,
+)
+
+import androidx.compose.animation.AnimatedContent
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.animation.scaleIn
+import androidx.compose.animation.scaleOut
+import androidx.compose.animation.with
+import androidx.compose.foundation.clickable
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.Icon
+import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
+import androidx.compose.material.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.MediumTopAppBar
+import androidx.compose.material3.TopAppBarDefaults
+import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.*
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavDeepLink
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.ilustris.cosmos.resources.Res
+import com.ilustris.cosmos.resources.ic_left
+import com.ilustris.cosmos.resources.moon_24
 import di.CommonModule
+import features.discovery.ui.DiscoveryDetail
+import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinApplication
 import org.koin.core.context.loadKoinModules
 import org.koin.core.context.startKoin
@@ -25,17 +62,111 @@ fun App() {
             }) {
                 loadKoinModules(CommonModule.fetchModules())
                 val navController = LocalNavController.current
+                val navControllerState = LocalNavController.current.currentBackStackEntryAsState().value
+                val currentPage = CosmosApp.Navigation.Pages.getFromKey(navControllerState?.destination?.route)
+                val scrollBehavior =
+                    TopAppBarDefaults.enterAlwaysScrollBehavior(
+                        rememberTopAppBarState(),
+                    )
+
+                fun isAppBarHidden() = currentPage?.showAppBar == false
+
+                fun isNavBarHidden() = currentPage?.showBottomNav == false
+
                 Scaffold(
-                    // TODO: Add bottomBar
-                    // bottomBar = { CosmosApp.Navigation.BottomNav(navController) }
-                ) {
+                    modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
+                    topBar = {
+                        AnimatedVisibility(!isAppBarHidden(), enter = fadeIn(), exit = fadeOut()) {
+                            MediumTopAppBar(
+                                colors =
+                                    TopAppBarDefaults.mediumTopAppBarColors().copy(
+                                        scrolledContainerColor = MaterialTheme.colors.background,
+                                        containerColor = MaterialTheme.colors.background,
+                                    ),
+                                scrollBehavior = scrollBehavior,
+                                modifier = Modifier.displayCutoutPadding(),
+                                title = {
+                                    AnimatedContent(currentPage?.pageConfig?.title ?: "Cosmos", contentAlignment = Alignment.Center) {
+                                        Text(
+                                            it,
+                                            style = MaterialTheme.typography.h4,
+                                            fontWeight = FontWeight.Bold,
+                                        )
+                                    }
+                                },
+                                navigationIcon = {
+                                    val icon =
+                                        if (currentPage != CosmosApp.Navigation.Pages.Home) {
+                                            Res.drawable.ic_left
+                                        } else {
+                                            Res.drawable.moon_24
+                                        }
+
+                                    val description =
+                                        if (currentPage != CosmosApp.Navigation.Pages.Home) {
+                                            "voltar"
+                                        } else {
+                                            "Home"
+                                        }
+
+                                    AnimatedContent(
+                                        icon,
+                                        contentAlignment = Alignment.Center,
+                                        modifier = Modifier.padding(horizontal = 8.dp),
+                                        transitionSpec = {
+                                            scaleIn() with scaleOut()
+                                        },
+                                    ) {
+                                        Icon(
+                                            painter = painterResource(icon),
+                                            contentDescription = description,
+                                            modifier =
+                                                Modifier.size(32.dp)
+                                                    .clip(CircleShape)
+                                                    .clickable { navController.popBackStack() },
+                                        )
+                                    }
+                                },
+                                actions = {
+                                    Box(Modifier.size(32.dp))
+                                },
+                            )
+                        }
+                    },
+                    bottomBar = {
+                        AnimatedVisibility(!isNavBarHidden(), enter = fadeIn(), exit = fadeOut()) {
+                            CosmosApp.Navigation.BottomNav(currentPage) {
+                                if (currentPage != it) {
+                                    navController.navigate(
+                                        it.pageConfig.route,
+                                    )
+                                }
+                            }
+                        }
+                    },
+                ) { padding ->
                     NavHost(
+                        modifier = Modifier.padding(bottom = 50.dp).fillMaxSize(),
                         navController = navController,
-                        startDestination = CosmosApp.Navigation.Pages.Splash.route,
-                        modifier = Modifier.fillMaxSize().padding(vertical = 50.dp),
+                        startDestination = CosmosApp.Navigation.Pages.Splash.pageConfig.route,
                     ) {
                         CosmosApp.Navigation.Pages.entries.forEach { page ->
-                            composable(page.route) { page.view() }
+                            composable(
+                                page.pageConfig.route,
+                                deepLinks = listOf(
+                                    NavDeepLink
+                                        .Builder()
+                                        .setUriPattern(page.pageConfig.route)
+                                        .build(),
+                                ),
+                            ) {
+                                if (page.pageConfig.key == CosmosApp.Navigation.Pages.DiscoveryDetail.pageConfig.key) {
+                                    val key = it.arguments?.getString(DiscoveryDetail.argumentKey)
+                                    page.view(key)
+                                } else {
+                                    page.view(null)
+                                }
+                            }
                         }
                     }
                 }

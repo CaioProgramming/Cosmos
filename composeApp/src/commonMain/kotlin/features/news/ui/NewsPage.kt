@@ -40,18 +40,12 @@ object NewsPage {
 
 @Composable
 fun NewsView() {
-    val newsNavigation = rememberNavController()
-    NavHost(newsNavigation, startDestination = NewsPage.tag) {
-        composable(NewsPage.tag) {
-            NewsList(newsNavigation = newsNavigation)
-        }
-    }
+    NewsList()
 }
 
 @Composable
 fun NewsList(
-    viewModel: NewsViewModel = koinInject(),
-    newsNavigation: NavController? = null,
+    viewModel: NewsViewModel = koinInject()
 ) {
     val state = viewModel.state.collectAsState(null).value
     val rootNavController: NavController = LocalNavController.current
@@ -74,28 +68,6 @@ fun NewsList(
             }
         is NewsState.Success -> {
             LazyColumn {
-                stickyHeader {
-                    TopAppBar(
-                        backgroundColor = MaterialTheme.colors.background,
-                        navigationIcon = {
-                            Icon(
-                                Icons.AutoMirrored.Rounded.KeyboardArrowLeft,
-                                "Voltar",
-                                modifier =
-                                    Modifier.clickable {
-                                        rootNavController.popBackStack()
-                                    },
-                            )
-                        },
-                        title = {
-                            Text(
-                                "Notícias",
-                                style = MaterialTheme.typography.h6.copy(fontWeight = FontWeight.Bold),
-                            )
-                        },
-                    )
-                }
-
                 val news = state.newsData.news
                 items(news.size) {
                     NewsCardPager(news[it].pages, news[it].reference)

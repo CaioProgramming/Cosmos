@@ -41,19 +41,15 @@ import com.chrynan.colors.extension.RebeccaPurple
 import com.ilustris.cosmos.resources.Res
 import com.ilustris.cosmos.resources.google_multicolor_24
 import com.ilustris.cosmos.resources.login_illust
-import features.home.ui.HomePage
 import org.jetbrains.compose.resources.painterResource
 import theme.CosmosApp
-
-object LoginPage {
-    val tag = "LoginPage"
-}
 
 @Composable
 fun LoginView(navController: NavController = LocalNavController.current) {
 
     fun navigateToHome() {
-        navController.navigate(HomePage.tag) }
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
+    }
 
     Column(
         modifier = Modifier.padding(vertical = 32.dp).verticalScroll(rememberScrollState()),

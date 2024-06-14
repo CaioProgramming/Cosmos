@@ -30,9 +30,6 @@ import features.events.ui.components.EventLargeCard
 import org.koin.compose.koinInject
 import theme.CosmosApp
 
-object EventsPage {
-    val tag = "EventPage"
-}
 
 @Composable
 fun EventView() {
@@ -41,15 +38,7 @@ fun EventView() {
     val state = viewModel.state.collectAsState().value
 
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-        TopAppBar(
-            title = { Text(text = "Eventos") },
-            backgroundColor = MaterialTheme.colors.background,
-            navigationIcon = {
-                IconButton(onClick = { rootController.popBackStack() }) {
-                    Icon(Icons.AutoMirrored.Rounded.KeyboardArrowLeft, contentDescription = "Back")
-                }
-            },
-        )
+
 
         when (state) {
             is EventState.Error -> Text(text = "Ocorreu um erro ao carregar os eventos.")

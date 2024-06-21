@@ -33,7 +33,7 @@ fun SplashView(navController: NavController = LocalNavController.current) {
 
 
     fun navigateToHome() {
-        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Education, navController)
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
     }
 
     Column(

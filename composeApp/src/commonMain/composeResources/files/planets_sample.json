@@ -1,0 +1,84 @@
+{
+  "planets": [
+    {
+      "title": "Mercúrio",
+      "description": "Mercúrio é o planeta mais próximo do Sol. É um planeta rochoso, destituído de satélites e atmosfera rarefeita, sendo também o menor planeta do sistema solar.",
+      "resource": "mercury",
+      "earthDistance": 77,
+      "sunDistance": 57.9,
+      "temperature": 350,
+      "yearDuration": 88,
+      "rotationSpeed": 10.892
+    },
+    {
+      "title": "Vênus",
+      "description": "Vênus é o segundo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, sem satélites e com uma atmosfera densa e quente.",
+      "resource": "venus",
+      "sunDistance": 108.2,
+      "earthDistance": 38,
+      "temperature": 465,
+      "yearDuration": 225,
+      "rotationSpeed": 6.52
+    },
+    {
+      "title": "Terra",
+      "description": "A Terra é o terceiro planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, com um satélite natural, a Lua, e uma atmosfera que permite a existência de vida.",
+      "resource": "earth",
+      "earthDistance": 0,
+      "sunDistance": 147.1,
+      "temperature": 15,
+      "yearDuration": 365,
+      "rotationSpeed": 1.670
+    },
+    {
+      "title": "Marte",
+      "description": "Marte é o quarto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta rochoso, com dois satélites naturais, Fobos e Deimos, e uma atmosfera rarefeita.",
+      "resource": "mars",
+      "earthDistance": 54,
+      "sunDistance": 227.9,
+      "temperature": -65,
+      "yearDuration": 687,
+      "rotationSpeed": 870
+    },
+    {
+      "title": "Júpiter",
+      "description": "Júpiter é o quinto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 79 satélites naturais conhecidos e uma atmosfera rica em hidrogênio e hélio.",
+      "resource": "jupiter",
+      "earthDistance": 588,
+      "sunDistance": 778.6,
+      "temperature": -110,
+      "yearDuration": 4333,
+      "rotationSpeed": 45
+    },
+    {
+      "title": "Saturno",
+      "description": "Saturno é o sexto planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 82 satélites naturais conhecidos e um sistema de anéis.",
+      "resource": "saturn",
+      "earthDistance": 1195,
+      "sunDistance": 1433.5,
+      "temperature": -140,
+      "yearDuration": 10759,
+      "rotationSpeed": 34
+    },
+    {
+      "title": "Urano",
+      "description": "Urano é o sétimo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 27 satélites naturais conhecidos e um eixo de rotação inclinado.",
+      "resource": "uranus",
+      "earthDistance": 1785,
+      "sunDistance": 2872.5,
+      "temperature": -195,
+      "yearDuration": 30687,
+      "rotationSpeed": 17
+    },
+    {
+      "title": "Netuno",
+      "description": "Netuno é o oitavo planeta do sistema solar em ordem de distância a partir do Sol. É um planeta gasoso, com 14 satélites naturais conhecidos e uma atmosfera rica em metano.",
+      "resource": "neptune",
+      "earthDistance": 2795,
+        "sunDistance": 4495.1,
+      "temperature": -200,
+      "yearDuration": 60190,
+      "rotationSpeed": 16
+    }
+  ]
+}

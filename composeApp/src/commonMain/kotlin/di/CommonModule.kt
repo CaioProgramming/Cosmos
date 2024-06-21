@@ -3,6 +3,7 @@ package di
 import androidx.compose.runtime.Composable
 import features.discovery.di.DiscoveryModule
 import features.discovery.model.data.Discovery
+import features.education.di.EducationModule
 import features.events.di.EventModule
 import features.home.di.HomeModule
 import features.news.di.NewsModule
@@ -17,7 +18,8 @@ object CommonModule {
             HomeModule.modules(),
             NewsModule.modules(),
             EventModule.modules(),
-            DiscoveryModule.modules()
+            DiscoveryModule.modules(),
+            EducationModule.module()
         )
 }
 

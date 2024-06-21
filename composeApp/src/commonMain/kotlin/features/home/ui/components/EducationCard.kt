@@ -29,10 +29,11 @@ fun EducationCard(
     title: String,
     description: String,
     thumbnail: String,
+    modifier: Modifier = Modifier,
 ) {
     Box(
         modifier =
-            Modifier
+            modifier
                 .padding(16.dp)
                 .fillMaxWidth()
                 .height(170.dp)

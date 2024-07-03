@@ -27,6 +27,8 @@ fun Modifier.glow(
             color,
             Color.Transparent,
         ),
+        radius = radius,
+
     ),
     CircleShape,
 )

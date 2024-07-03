@@ -14,13 +14,12 @@ class PlanetsViewModel(private val planetsUseCase: PlanetsUseCase) : ViewModel()
 
     val state = MutableStateFlow<PlanetsState?> (null)
 
-
     fun getPlanets() {
         state.value = PlanetsState.Loading
         viewModelScope.launch(Dispatchers.IO) {
             when (val result = planetsUseCase.getPlanets()) {
                 is ServiceResult.Success -> {
-                    state.value = PlanetsState.Success(result.data.planets)
+                    state.value = PlanetsState.Success(result.data.planets, result.data.constellations)
                 }
                 is ServiceResult.Error -> {
                     state.value = PlanetsState.Error(result.exception.message ?: "An error occurred")

@@ -47,6 +47,7 @@ import com.ilustris.cosmos.resources.ic_earth
 import com.ilustris.cosmos.resources.ic_rotation
 import com.ilustris.cosmos.resources.ic_sun
 import com.ilustris.cosmos.resources.ic_thermometer
+import com.ilustris.cosmos.resources.moon_24
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.painterResource
 import theme.CosmosApp
@@ -176,7 +177,7 @@ fun CounterText(value: Int, suffix: String = "", style: TextStyle = MaterialThem
 }
 
 @Composable
-fun DetailCard(title: String, suffix: String = "", iconVector: DrawableResource, counting: Float, progress: Float? = null, tint: Color) {
+fun DetailCard(title: String, suffix: String = "", iconVector: DrawableResource = Res.drawable.moon_24, counting: Float, progress: Float? = null, tint: Color) {
     Column(modifier = Modifier
         .padding(Dimensions.padding8)
         .fillMaxWidth()
@@ -195,6 +196,43 @@ fun DetailCard(title: String, suffix: String = "", iconVector: DrawableResource,
             CounterText(
                 counting.roundToInt(),
                 suffix,
+                style = MaterialTheme.typography.h6.copy(color = tint)
+            )
+        }
+
+        AnimatedVisibility(progress != null, enter = fadeIn(), exit = fadeOut()) {
+            LinearProgressIndicator(
+                progress = progress ?: 0.0f,
+                color = tint,
+                strokeCap = StrokeCap.Round,
+                backgroundColor = Color.Transparent,
+                modifier = Modifier.fillMaxWidth(),
+            )
+        }
+    }
+}
+
+@Composable
+fun DetailCard(title: String,
+               iconVector: DrawableResource = Res.drawable.moon_24,
+               value: String, progress: Float? = null, tint: Color) {
+    Column(modifier = Modifier
+        .padding(Dimensions.padding8)
+        .fillMaxWidth()
+        .background(MaterialTheme.colors.background.copy(alpha = 0.3f), RoundedCornerShape(CosmosApp.Resources.defaultRadius))
+        .padding(Dimensions.padding8)
+    ) {
+        Text(text = title, style = MaterialTheme.typography.caption)
+        Row(modifier = Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+            Icon(painterResource(iconVector),
+                contentDescription = title,
+                tint = tint,
+                modifier = Modifier
+                    .size(32.dp)
+                    .padding(end = Dimensions.padding4)
+            )
+         Text(
+                value,
                 style = MaterialTheme.typography.h6.copy(color = tint)
             )
         }

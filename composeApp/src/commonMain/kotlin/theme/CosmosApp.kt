@@ -48,7 +48,7 @@ import features.events.ui.EventView
 import features.home.ui.HomeView
 import features.login.LoginView
 import features.news.ui.NewsView
-import features.education.ui.PlanetsView
+import features.education.ui.EducationView
 import features.splash.SplashView
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
@@ -283,7 +283,7 @@ object CosmosApp {
                 pageConfig = PageConfig("Planetas e constelações", "Planets"),
                 showBottomNav = false,
                 showAppBar = false,
-                view = { PlanetsView() },
+                view = { EducationView() },
             ),
             ;
 
@@ -292,7 +292,7 @@ object CosmosApp {
                     route?.let {
                         val page =
                             entries.firstOrNull { page ->
-                                print("\nComparing route $it\n with ${page.pageConfig.key}")
+                               // print("\nComparing route $it\n with ${page.pageConfig.key}")
                                 it.contains(page.pageConfig.key, true)
                             }
                         print("\nFound page => $page\n")

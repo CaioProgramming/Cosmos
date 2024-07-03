@@ -7,6 +7,8 @@
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
@@ -34,6 +36,8 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.unit.sp
+import androidx.compose.ui.util.lerp
 import androidx.navigation.NavDeepLink
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
@@ -64,14 +68,19 @@ fun App() {
                 val navController = LocalNavController.current
                 val navControllerState = LocalNavController.current.currentBackStackEntryAsState().value
                 val currentPage = CosmosApp.Navigation.Pages.getFromKey(navControllerState?.destination?.route)
+                val barState = rememberTopAppBarState()
                 val scrollBehavior =
                     TopAppBarDefaults.enterAlwaysScrollBehavior(
-                        rememberTopAppBarState(),
+                        barState,
                     )
 
                 fun isAppBarHidden() = currentPage?.showAppBar == false
 
                 fun isNavBarHidden() = currentPage?.showBottomNav == false
+                val headlineSize = MaterialTheme.typography.h4.fontSize.value
+                val smallTitleSize = MaterialTheme.typography.h6.fontSize.value
+                val targetSize = lerp(headlineSize, smallTitleSize, scrollBehavior.state.collapsedFraction)
+
 
                 Scaffold(
                     modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
@@ -89,7 +98,9 @@ fun App() {
                                     AnimatedContent(currentPage?.pageConfig?.title ?: "Cosmos", contentAlignment = Alignment.Center) {
                                         Text(
                                             it,
+
                                             style = MaterialTheme.typography.h4,
+                                            fontSize = targetSize.sp,
                                             fontWeight = FontWeight.Bold,
                                         )
                                     }

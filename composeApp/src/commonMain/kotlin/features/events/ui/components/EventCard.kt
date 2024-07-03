@@ -22,16 +22,11 @@ import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.outlined.Info
-import androidx.compose.material.icons.outlined.Menu
 import androidx.compose.material.icons.rounded.Info
-import androidx.compose.material.icons.rounded.Menu
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -210,12 +205,12 @@ fun EventLargeCard(
                         .padding(16.dp)
                         .align(Alignment.TopEnd),
             ) {
-                EventPopUp(
+                PopupButton(
                     "Visibilidade",
                     countries.map { CountryUtils.mapCountry(it) }.filter { it.isNotEmpty() },
                     painterResource(Res.drawable.ic_binocular),
                 )
-                EventPopUp(
+                PopupButton(
                     "Informações adicionais",
                     extraInfo,
                     painterResource(Res.drawable.more_horizontal),
@@ -240,12 +235,13 @@ fun EventLargeCard(
 }
 
 @Composable
-fun EventPopUp(
+fun PopupButton(
     title: String,
     items: List<String>,
     icon: Painter,
+    modifier: Modifier = Modifier
 ) {
-    Menu(Modifier.padding(8.dp)) {
+    Menu(modifier.padding(8.dp)) {
         MenuButton(modifier = Modifier.clip(CircleShape)) {
             Icon(
                 icon,

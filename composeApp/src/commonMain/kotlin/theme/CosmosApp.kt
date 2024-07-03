@@ -48,6 +48,7 @@ import features.events.ui.EventView
 import features.home.ui.HomeView
 import features.login.LoginView
 import features.news.ui.NewsView
+import features.education.ui.EducationView
 import features.splash.SplashView
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
@@ -163,8 +164,10 @@ object CosmosApp {
     }
 
     object Navigation {
-
-        fun navigateTo(page: Pages, navController: NavController) {
+        fun navigateTo(
+            page: Pages,
+            navController: NavController,
+        ) {
             navController.navigate(page.pageConfig.route)
         }
 
@@ -177,10 +180,10 @@ object CosmosApp {
             val key: String,
             val arguments: List<NamedNavArgument> = emptyList(),
         ) {
-
-            private fun argumentsPath() = arguments.joinToString("/") {
-                "{${it.name}}"
-            }
+            private fun argumentsPath() =
+                arguments.joinToString("/") {
+                    "{${it.name}}"
+                }
 
             val route = "$navigationBasePath/$key/${argumentsPath()}"
         }
@@ -276,15 +279,22 @@ object CosmosApp {
                 showAppBar = false,
                 view = { DiscoveryDetail(it as String) },
             ),
+            Education(
+                pageConfig = PageConfig("Planetas e constelações", "Planets"),
+                showBottomNav = false,
+                showAppBar = false,
+                view = { EducationView() },
+            ),
             ;
 
             companion object {
-                fun getFromKey(route: String?) : Pages? {
+                fun getFromKey(route: String?): Pages? {
                     route?.let {
-                        val page = entries.firstOrNull { page ->
-                            print("\nComparing route $it\n with ${page.pageConfig.key}")
-                            it.contains(page.pageConfig.key, true)
-                        }
+                        val page =
+                            entries.firstOrNull { page ->
+                               // print("\nComparing route $it\n with ${page.pageConfig.key}")
+                                it.contains(page.pageConfig.key, true)
+                            }
                         print("\nFound page => $page\n")
                         return page
                     } ?: run {
@@ -363,25 +373,6 @@ object CosmosApp {
             }
         }
     }
-}
-
-object Dimensions {
-    val padding4 = 4.dp
-    val padding8 = 8.dp
-    val padding16 = 16.dp
-    val padding24 = 24.dp
-
-    val radius5 = 5.dp
-    val radius10 = 10.dp
-    val radius15 = 15.dp
-    val radius20 = 20.dp
-}
-
-object Corners {
-    val small = Dimensions.radius5
-    val medium = Dimensions.radius10
-    val large = Dimensions.radius15
-    val extraLarge = Dimensions.radius20
 }
 
 @Composable

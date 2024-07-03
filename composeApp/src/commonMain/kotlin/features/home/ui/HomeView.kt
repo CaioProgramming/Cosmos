@@ -200,7 +200,9 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                 }
                 it.page.educationCard.run {
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
-                        EducationCard(title, description, thumbnailURL)
+                        EducationCard(title, description, thumbnailURL, modifier = Modifier.clickable {
+                            CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Education, navController)
+                        })
                     }
                 }
                 it.page.gallery.run {

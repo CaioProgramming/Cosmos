@@ -21,9 +21,6 @@ import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
 import theme.CosmosApp
 
-object SplashPage {
-    val tag = "SplashPage"
-}
 @Composable
 fun SplashView(navController: NavController = LocalNavController.current) {
 

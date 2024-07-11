@@ -123,17 +123,16 @@ fun GallerySlidesView(
                         contentDescription = null,
                         contentScale = ContentScale.Crop,
                         modifier =
-                        Modifier
-                            .fillMaxSize()
-                            .blur(25.dp, BlurredEdgeTreatment.Unbounded)
-                            .graphicsLayer {
-                                scaleX = zoomAnimation.value
-                                scaleY = zoomAnimation.value
-                            },
+                            Modifier
+                                .fillMaxSize()
+                                .blur(25.dp, BlurredEdgeTreatment.Unbounded)
+                                .graphicsLayer {
+                                    scaleX = zoomAnimation.value
+                                    scaleY = zoomAnimation.value
+                                },
                     )
                 }
             }
-
 
             HorizontalPager(pagerState, modifier = Modifier.background(Color.Transparent).fillMaxSize()) { page ->
                 val item = images[page]
@@ -141,7 +140,7 @@ fun GallerySlidesView(
                     targetState = imageExpanded,
                     transitionSpec = {
                         fadeIn(tween(200)) + scaleIn(tween(), initialScale = 0.8f) with
-                        fadeOut(tween(200))+ scaleOut(tween(),targetScale = 0.8f)
+                            fadeOut(tween(200)) + scaleOut(tween(), targetScale = 0.8f)
                     },
                 ) {
                     val scale = if (it) ContentScale.Crop else ContentScale.Fit

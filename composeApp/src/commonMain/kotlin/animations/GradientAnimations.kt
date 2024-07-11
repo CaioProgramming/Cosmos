@@ -46,7 +46,7 @@ fun Modifier.createGradientAnimation(colors: List<Color> = CosmosApp.Colors.them
         )
     }
 
-    return Modifier
+    return this
         .graphicsLayer(alpha = 0.99f)
         .drawWithCache {
             onDrawWithContent {

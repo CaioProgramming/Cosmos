@@ -52,7 +52,7 @@ fun EducationCard(
                 )),
     ) {
         StarryBackground(
-            10,
+            5,
             modifier = Modifier.fillMaxSize(),
         )
         Column(

@@ -1,14 +1,20 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
-    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class
+    ExperimentalFoundationApi::class, ExperimentalFoundationApi::class,
+    ExperimentalFoundationApi::class
 )
 
 package utils
 
+import androidx.compose.animation.core.EaseInElastic
+import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
+import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.TransformOrigin
 import androidx.compose.ui.graphics.graphicsLayer
+import androidx.compose.ui.util.lerp
 import kotlin.math.absoluteValue
 
 fun Modifier.pagerCubeInScalingTransition(pagerState: PagerState) = graphicsLayer {
@@ -97,4 +103,22 @@ fun Modifier.pagerFadeTransition(pagerState: PagerState) = graphicsLayer {
     } else {
         alpha = 0f
     }
+}
+
+@Composable
+fun Modifier.
+        pagerZoomTransition(pagerState: PagerState) = graphicsLayer {
+    // Calculate the absolute offset for the current page from the
+    // scroll position.
+    val page = pagerState.currentPage
+    val pageOffset = pagerState.getOffsetFractionForPage(page)
+    val targetValue = if (pageOffset < 0) 1.3f else 1f
+
+    // Adjust the scale of the page based on its offset from the center
+    val minScale = 1.85f
+    val maxScale = 1f
+    val scale = lerp(minScale, maxScale, 1 - pageOffset.absoluteValue)
+
+    scaleX = scale
+    scaleY = scale
 }

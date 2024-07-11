@@ -4,20 +4,15 @@ package features.home.ui
 
 import LocalNavController
 import androidx.compose.animation.AnimatedContent
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
-import androidx.compose.animation.scaleOut
-import androidx.compose.animation.slideInVertically
 import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -51,14 +46,15 @@ import features.home.presentation.HomeViewModel
 import features.home.ui.components.CardItem
 import features.home.ui.components.EducationCard
 import features.home.ui.components.ExploreCard
-import features.home.ui.components.GalleryCard
+import features.gallery.ui.GalleryCard
 import features.home.ui.components.ListHeader
-import features.news.ui.NewsPage
 import org.koin.compose.koinInject
 import theme.CosmosApp
 import theme.Dimensions
 import theme.defaultRadius
 import utils.DateFormats
+import utils.fadingEdgeTop
+import utils.fadingEdgeTopAndBottom
 import utils.getFormatted
 
 
@@ -207,12 +203,23 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                 }
                 it.page.gallery.run {
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
-                        ListHeader("Galeria")
+                        ListHeader("Galeria") {
+                            CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Gallery, navController)
+                        }
                     }
-                    items(count = size) { index ->
+                    items(count = size, span = {
+                        val item = get(it)
+                        if (item == first()) GridItemSpan(this.maxLineSpan) else {
+                            GridItemSpan(1)
+                        }
+                    }) { index ->
                         val gallery = get(index)
                         gallery.run {
-                            GalleryCard(title, description, thumbnailURL)
+                            GalleryCard(title, description, thumbnailURL, modifier = Modifier
+                                .fillMaxWidth()
+                                .height(200.dp)
+                                .let { if (index == 0) it.fadingEdgeTop() else it }
+                                .clickable {CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Gallery, navController) })
                         }
                     }
                 }

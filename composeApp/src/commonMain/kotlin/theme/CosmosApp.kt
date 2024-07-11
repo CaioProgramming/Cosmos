@@ -49,12 +49,16 @@ import features.home.ui.HomeView
 import features.login.LoginView
 import features.news.ui.NewsView
 import features.education.ui.EducationView
+import features.gallery.ui.GallerySlidesView
+import features.gallery.ui.GalleryView
 import features.splash.SplashView
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import service.emptyString
 import theme.CosmosApp.Typo.cosmoTypography
+import utils.NavigationUtils
+import utils.NavigationUtils.replaceArgs
 
 object CosmosApp {
     @Composable
@@ -171,7 +175,15 @@ object CosmosApp {
             navController.navigate(page.pageConfig.route)
         }
 
-        private const val navigationBasePath = "cosmos:/"
+
+        fun navigateWithArgs(page: Pages, args: Map<String,String>, navController: NavController) {
+            var route = page.pageConfig.route
+            print("\n navigating to page => ${page.pageConfig.key}: $route")
+            route = route.replaceArgs(args)
+            print("\n formatted route => $route")
+            navController.navigate(route)
+        }
+
 
         data class IconConfig(val outlineIcon: DrawableResource, val filledIcon: DrawableResource)
 
@@ -185,7 +197,7 @@ object CosmosApp {
                     "{${it.name}}"
                 }
 
-            val route = "$navigationBasePath/$key/${argumentsPath()}"
+            val route = "$NAVIGATION_ROOT_PATH/$key/${argumentsPath()}"
         }
 
         enum class Pages(
@@ -195,7 +207,7 @@ object CosmosApp {
             val showAppBar: Boolean = true,
             val view:
                 @Composable
-                (Any?) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
+                (Map<String, String?>) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
         ) {
             Splash(
                 PageConfig(
@@ -255,6 +267,25 @@ object CosmosApp {
                 ),
                 view = { NewsView() },
             ),
+            Gallery(
+                PageConfig(
+                    "Galeria",
+                    "Gallery",
+                ),
+                showBottomNav = true,
+                view = { GalleryView() },
+            ),
+            GallerySlides(
+                PageConfig("Slide Gallery", "slide-pics",
+                    arguments = listOf(navArgument("position") { type = NavType.IntType })
+                ),
+                showBottomNav = false,
+                showAppBar = false,
+                view = {
+                    val position = it["position"]?.toIntOrNull()
+                    GallerySlidesView(position)
+                }
+            ),
             Discovery(
                 PageConfig(
                     "Curiosidades",
@@ -277,7 +308,10 @@ object CosmosApp {
                 ),
                 showBottomNav = true,
                 showAppBar = false,
-                view = { DiscoveryDetail(it as String) },
+                view = {
+                    val id = it["id"]
+                    DiscoveryDetail(id)
+                       },
             ),
             Education(
                 pageConfig = PageConfig("Planetas e constelações", "Planets"),
@@ -377,3 +411,5 @@ object CosmosApp {
 
 @Composable
 fun Modifier.defaultRadius() = clip(RoundedCornerShape(CosmosApp.Resources.defaultRadius))
+
+private const val NAVIGATION_ROOT_PATH = "cosmos:/"

@@ -1,4 +1,4 @@
-package features.home.ui.components
+package features.gallery.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -22,17 +22,15 @@ fun GalleryCard(
     title: String,
     description: String,
     thumbnail: String,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier =
-            Modifier
-                .fillMaxWidth(0.5f)
-                .height(400.dp),
+        modifier = modifier,
     ) {
         KamelImage(
             resource = asyncPainterResource(data = thumbnail),
             contentDescription = title,
-            modifier = Modifier.fillMaxSize().fadingEdgeTop(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
         Column(modifier = Modifier.align(Alignment.BottomStart)) {

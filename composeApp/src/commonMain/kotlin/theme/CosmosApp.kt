@@ -44,20 +44,19 @@ import com.ilustris.cosmos.resources.romauntgaolines
 import com.ilustris.cosmos.resources.sf_pro
 import features.discovery.ui.DiscoveryDetail
 import features.discovery.ui.DiscoveryView
+import features.education.ui.EducationView
 import features.events.ui.EventView
+import features.gallery.ui.GallerySlidesView
+import features.gallery.ui.GalleryView
 import features.home.ui.HomeView
 import features.login.LoginView
 import features.news.ui.NewsView
-import features.education.ui.EducationView
-import features.gallery.ui.GallerySlidesView
-import features.gallery.ui.GalleryView
 import features.splash.SplashView
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
 import org.jetbrains.compose.resources.painterResource
 import service.emptyString
 import theme.CosmosApp.Typo.cosmoTypography
-import utils.NavigationUtils
 import utils.NavigationUtils.replaceArgs
 
 object CosmosApp {
@@ -69,13 +68,11 @@ object CosmosApp {
         content:
             @Composable()
             () -> Unit,
-    ) {
-        return MaterialTheme(
-            colors = Colors.DarkColorScheme,
-            content = content,
-            typography = typography(),
-        )
-    }
+    ) = MaterialTheme(
+        colors = Colors.DarkColorScheme,
+        content = content,
+        typography = typography(),
+    )
 
     object Resources {
         val defaultRadius = Corners.large
@@ -143,16 +140,32 @@ object CosmosApp {
     }
 
     object Colors {
-        private val White = androidx.compose.ui.graphics.Color(0xFFFFFFFF)
-        val Black = androidx.compose.ui.graphics.Color(0xff000000)
+        private val White =
+            androidx.compose.ui.graphics
+                .Color(0xFFFFFFFF)
+        val Black =
+            androidx.compose.ui.graphics
+                .Color(0xff000000)
 
-        private val DarkBackground = androidx.compose.ui.graphics.Color(0xff050522)
-        private val DarkSurface = androidx.compose.ui.graphics.Color(0xff212165)
-        val LightBackground = androidx.compose.ui.graphics.Color(0xFFf2f2f2)
+        private val DarkBackground =
+            androidx.compose.ui.graphics
+                .Color(0xff050522)
+        private val DarkSurface =
+            androidx.compose.ui.graphics
+                .Color(0xff212165)
+        val LightBackground =
+            androidx.compose.ui.graphics
+                .Color(0xFFf2f2f2)
 
-        private val primary = androidx.compose.ui.graphics.Color(0xff0f0e62)
-        private val secondary = androidx.compose.ui.graphics.Color(0xffa96ec9)
-        private val tertiary = androidx.compose.ui.graphics.Color(0xff8767fa)
+        private val primary =
+            androidx.compose.ui.graphics
+                .Color(0xff0f0e62)
+        private val secondary =
+            androidx.compose.ui.graphics
+                .Color(0xffa96ec9)
+        private val tertiary =
+            androidx.compose.ui.graphics
+                .Color(0xff8767fa)
         val DarkColorScheme =
             darkColors(
                 primary = primary,
@@ -175,8 +188,11 @@ object CosmosApp {
             navController.navigate(page.pageConfig.route)
         }
 
-
-        fun navigateWithArgs(page: Pages, args: Map<String,String>, navController: NavController) {
+        fun navigateWithArgs(
+            page: Pages,
+            args: Map<String, String>,
+            navController: NavController,
+        ) {
             var route = page.pageConfig.route
             print("\n navigating to page => ${page.pageConfig.key}: $route")
             route = route.replaceArgs(args)
@@ -184,8 +200,10 @@ object CosmosApp {
             navController.navigate(route)
         }
 
-
-        data class IconConfig(val outlineIcon: DrawableResource, val filledIcon: DrawableResource)
+        data class IconConfig(
+            val outlineIcon: DrawableResource,
+            val filledIcon: DrawableResource,
+        )
 
         data class PageConfig(
             val title: String,
@@ -206,8 +224,7 @@ object CosmosApp {
             val showBottomNav: Boolean = false,
             val showAppBar: Boolean = true,
             val view:
-                @Composable
-                (Map<String, String?>) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
+                @Composable (Map<String, String?>) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
         ) {
             Splash(
                 PageConfig(
@@ -276,15 +293,17 @@ object CosmosApp {
                 view = { GalleryView() },
             ),
             GallerySlides(
-                PageConfig("Slide Gallery", "slide-pics",
-                    arguments = listOf(navArgument("position") { type = NavType.IntType })
+                PageConfig(
+                    "Slide Gallery",
+                    "slide-pics",
+                    arguments = listOf(navArgument("position") { type = NavType.IntType }),
                 ),
                 showBottomNav = false,
                 showAppBar = false,
                 view = {
                     val position = it["position"]?.toIntOrNull()
                     GallerySlidesView(position)
-                }
+                },
             ),
             Discovery(
                 PageConfig(
@@ -311,7 +330,7 @@ object CosmosApp {
                 view = {
                     val id = it["id"]
                     DiscoveryDetail(id)
-                       },
+                },
             ),
             Education(
                 pageConfig = PageConfig("Planetas e constelações", "Planets"),
@@ -326,7 +345,7 @@ object CosmosApp {
                     route?.let {
                         val page =
                             entries.firstOrNull { page ->
-                               // print("\nComparing route $it\n with ${page.pageConfig.key}")
+                                // print("\nComparing route $it\n with ${page.pageConfig.key}")
                                 it.contains(page.pageConfig.key, true)
                             }
                         print("\nFound page => $page\n")

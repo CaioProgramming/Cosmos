@@ -46,7 +46,6 @@ import theme.CosmosApp
 
 @Composable
 fun LoginView(navController: NavController = LocalNavController.current) {
-
     fun navigateToHome() {
         CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
     }
@@ -128,14 +127,14 @@ fun LoginView(navController: NavController = LocalNavController.current) {
 
         Button(
             shape = defaultRadius,
-            onClick = { navigateToHome()  },
+            onClick = { navigateToHome() },
             colors =
-            ButtonDefaults.outlinedButtonColors(
-                backgroundColor =
-                com.chrynan.colors.Color.Companion.RebeccaPurple
-                    .toComposeColor(),
-                contentColor = Color.White,
-            ),
+                ButtonDefaults.outlinedButtonColors(
+                    backgroundColor =
+                        com.chrynan.colors.Color.Companion.RebeccaPurple
+                            .toComposeColor(),
+                    contentColor = Color.White,
+                ),
             contentPadding = PaddingValues(16.dp),
             modifier = Modifier.fillMaxWidth(sizeFraction).padding(vertical = 8.dp),
         ) {
@@ -149,11 +148,11 @@ fun LoginView(navController: NavController = LocalNavController.current) {
         ) {
             Box(
                 modifier =
-                Modifier
-                    .padding(4.dp)
-                    .height(1.dp)
-                    .width(100.dp)
-                    .background(Color.White),
+                    Modifier
+                        .padding(4.dp)
+                        .height(1.dp)
+                        .width(100.dp)
+                        .background(Color.White),
             )
             Text(
                 "Ou",
@@ -162,11 +161,11 @@ fun LoginView(navController: NavController = LocalNavController.current) {
             )
             Box(
                 modifier =
-                Modifier
-                    .padding(4.dp)
-                    .height(1.dp)
-                    .width(100.dp)
-                    .background(Color.White),
+                    Modifier
+                        .padding(4.dp)
+                        .height(1.dp)
+                        .width(100.dp)
+                        .background(Color.White),
             )
         }
 
@@ -174,9 +173,9 @@ fun LoginView(navController: NavController = LocalNavController.current) {
             shape = defaultRadius,
             onClick = { /*TODO*/ },
             colors =
-            ButtonDefaults.outlinedButtonColors(
-                backgroundColor = MaterialTheme.colors.onBackground,
-            ),
+                ButtonDefaults.outlinedButtonColors(
+                    backgroundColor = MaterialTheme.colors.onBackground,
+                ),
             contentPadding = PaddingValues(12.dp),
             modifier = Modifier.padding(8.dp),
         ) {

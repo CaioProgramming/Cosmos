@@ -23,11 +23,9 @@ import theme.CosmosApp
 
 @Composable
 fun SplashView(navController: NavController = LocalNavController.current) {
-
     fun navigateToLogin() {
         CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Login, navController)
     }
-
 
     fun navigateToHome() {
         CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
@@ -38,18 +36,20 @@ fun SplashView(navController: NavController = LocalNavController.current) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-
         Row(verticalAlignment = Alignment.CenterVertically) {
-            CosmosApp.Resources.largeIcon(modifier = Modifier.createGradientAnimation(CosmosApp.Colors.themeColors()).clickable {
-                navigateToLogin()
-            })
+            CosmosApp.Resources.largeIcon(
+                modifier =
+                    Modifier.createGradientAnimation(CosmosApp.Colors.themeColors()).clickable {
+                        navigateToLogin()
+                    },
+            )
 
             Text(
                 text = "osmos",
                 style = MaterialTheme.typography.h4.copy(fontFamily = CosmosApp.Typo.headFontFamily()),
-                color = Color.White.toComposeColor())
+                color = Color.White.toComposeColor(),
+            )
         }
-
     }
 
     LaunchedEffect(Unit) {
@@ -58,8 +58,6 @@ fun SplashView(navController: NavController = LocalNavController.current) {
             navigateToHome()
         }
     }
-
-
 
     @Preview
     @Composable

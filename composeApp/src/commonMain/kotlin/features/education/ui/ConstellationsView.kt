@@ -110,7 +110,6 @@ fun StarryBackground(
                 targetValue = if (index <= starAnimation.value) 0.9f else 0.3f,
                 animationSpec = tween(2000),
             ).value
-            print("current glow $glowAnimation\n")
             Image(
                 painterResource(Res.drawable.ic_const),
                 contentDescription = null,

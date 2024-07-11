@@ -149,11 +149,7 @@ android {
         debugImplementation(compose.uiTooling)
     }
 }
-dependencies {
-    implementation(libs.androidx.material3.android)
-    implementation(libs.androidx.material3.desktop)
-    implementation(libs.androidx.navigation.common.ktx)
-}
+
 
 compose.desktop {
     application {

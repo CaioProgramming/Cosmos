@@ -23,6 +23,6 @@ class MockHelper {
 
 }
 
-private const val rootPath = "files/"
+private const val rootPath = "files"
 private const val extension = ".json"
 fun buildPath(fileName: String) = "$rootPath/$fileName$extension"

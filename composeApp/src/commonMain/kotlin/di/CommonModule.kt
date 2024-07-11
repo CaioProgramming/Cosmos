@@ -5,6 +5,7 @@ import features.discovery.di.DiscoveryModule
 import features.discovery.model.data.Discovery
 import features.education.di.EducationModule
 import features.events.di.EventModule
+import features.gallery.di.GalleryModule
 import features.home.di.HomeModule
 import features.news.di.NewsModule
 import org.koin.dsl.module
@@ -19,7 +20,8 @@ object CommonModule {
             NewsModule.modules(),
             EventModule.modules(),
             DiscoveryModule.modules(),
-            EducationModule.module()
+            EducationModule.module(),
+            GalleryModule.modules()
         )
 }
 

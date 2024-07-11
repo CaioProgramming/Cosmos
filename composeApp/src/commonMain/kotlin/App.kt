@@ -81,7 +81,6 @@ fun App() {
                 val smallTitleSize = MaterialTheme.typography.h6.fontSize.value
                 val targetSize = lerp(headlineSize, smallTitleSize, scrollBehavior.state.collapsedFraction)
 
-
                 Scaffold(
                     modifier = Modifier.fillMaxSize().nestedScroll(scrollBehavior.nestedScrollConnection),
                     topBar = {
@@ -98,7 +97,6 @@ fun App() {
                                     AnimatedContent(currentPage?.pageConfig?.title ?: "Cosmos", contentAlignment = Alignment.Center) {
                                         Text(
                                             it,
-
                                             style = MaterialTheme.typography.h4,
                                             fontSize = targetSize.sp,
                                             fontWeight = FontWeight.Bold,
@@ -132,7 +130,8 @@ fun App() {
                                             painter = painterResource(icon),
                                             contentDescription = description,
                                             modifier =
-                                                Modifier.size(32.dp)
+                                                Modifier
+                                                    .size(32.dp)
                                                     .clip(CircleShape)
                                                     .clickable { navController.popBackStack() },
                                         )
@@ -156,27 +155,32 @@ fun App() {
                         }
                     },
                 ) { padding ->
+
+                    val isShowingBottomNav = currentPage?.showBottomNav == true
+                    val padding = animateDpAsState(if (isShowingBottomNav) 50.dp else 0.dp, tween(1000))
+
                     NavHost(
-                        modifier = Modifier.padding(bottom = 50.dp).fillMaxSize(),
+                        modifier = Modifier.fillMaxSize().padding(bottom = padding.value),
                         navController = navController,
                         startDestination = CosmosApp.Navigation.Pages.Splash.pageConfig.route,
                     ) {
                         CosmosApp.Navigation.Pages.entries.forEach { page ->
+                            print("\nPage: ${page.pageConfig.route}\n")
                             composable(
                                 page.pageConfig.route,
-                                deepLinks = listOf(
-                                    NavDeepLink
-                                        .Builder()
-                                        .setUriPattern(page.pageConfig.route)
-                                        .build(),
-                                ),
-                            ) {
-                                if (page.pageConfig.key == CosmosApp.Navigation.Pages.DiscoveryDetail.pageConfig.key) {
-                                    val key = it.arguments?.getString(DiscoveryDetail.argumentKey)
-                                    page.view(key)
-                                } else {
-                                    page.view(null)
+                                deepLinks =
+                                    listOf(
+                                        NavDeepLink
+                                            .Builder()
+                                            .setUriPattern(page.pageConfig.route)
+                                            .build(),
+                                    ),
+                            ) {backStackEntry ->
+                                val args = page.pageConfig.arguments.associate {
+                                    it.name to backStackEntry.arguments?.getString(it.name)
                                 }
+                                page.view(args)
+
                             }
                         }
                     }

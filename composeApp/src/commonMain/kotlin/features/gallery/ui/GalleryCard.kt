@@ -1,10 +1,8 @@
-package features.home.ui.components
+package features.gallery.ui
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
@@ -15,24 +13,21 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
-import utils.fadingEdgeTop
 
 @Composable
 fun GalleryCard(
     title: String,
     description: String,
     thumbnail: String,
+    modifier: Modifier = Modifier,
 ) {
     Box(
-        modifier =
-            Modifier
-                .fillMaxWidth(0.5f)
-                .height(400.dp),
+        modifier = modifier,
     ) {
         KamelImage(
             resource = asyncPainterResource(data = thumbnail),
             contentDescription = title,
-            modifier = Modifier.fillMaxSize().fadingEdgeTop(),
+            modifier = Modifier.fillMaxSize(),
             contentScale = ContentScale.Crop,
         )
         Column(modifier = Modifier.align(Alignment.BottomStart)) {

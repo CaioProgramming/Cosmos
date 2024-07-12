@@ -1,36 +1,36 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalAnimationApi::class)
 
 package features.news.ui.components
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.ExperimentalAnimationApi
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.tween
 import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.animation.togetherWith
+import androidx.compose.animation.with
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxHeight
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -46,10 +46,13 @@ import io.kamel.image.KamelImage
 import io.kamel.image.asyncPainterResource
 import kotlinx.coroutines.launch
 import theme.shapeRadius10
+import utils.fadedBackground
 
 @Composable
-fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
-
+fun newsCardPager(
+    items: List<DefaultCard>,
+    reference: Reference,
+) {
     val requestedLink = mutableStateOf<String?>(null)
     val uriHandler = LocalUriHandler.current
 
@@ -58,15 +61,17 @@ fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
         requestedLink.value = null
     }
 
-
-
-
-
     val pagerState = rememberPagerState(pageCount = { items.size })
     val currentItem = items[pagerState.currentPage]
     val coroutineScope = rememberCoroutineScope()
     Column(
-        modifier = Modifier.fillMaxWidth().padding(16.dp).shapeRadius10().background(MaterialTheme.colors.surface).animateContentSize(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .shapeRadius10()
+                .background(MaterialTheme.colors.surface)
+                .animateContentSize(),
     ) {
         HorizontalPager(pagerState) {
             val item = items[it]
@@ -83,12 +88,21 @@ fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
             enter = fadeIn(),
             exit = fadeOut(tween(1000)),
         ) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.primary)
-                .padding(horizontal = 16.dp, vertical = 4.dp)
-                .clickable { openUrl(reference.link) }, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Veja mais em ${reference.author}", style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Start)
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.primary)
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .clickable { openUrl(reference.link) },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "Veja mais em ${reference.author}",
+                    style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Start,
+                )
                 Icon(
                     Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                     contentDescription = null,
@@ -124,6 +138,54 @@ fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
                 modifier = Modifier.padding(16.dp),
                 textAlign = TextAlign.Justify,
             )
+        }
+    }
+}
+
+@Composable
+fun newsHomePager(
+    items: List<DefaultCard>,
+    modifier: Modifier = Modifier,
+    onSelectItem: (DefaultCard) -> Unit,
+) {
+    val pagerState = rememberPagerState { items.size }
+    val currentItem = items[pagerState.currentPage]
+
+    Box(
+        modifier.clickable {
+            onSelectItem(currentItem)
+        },
+    ) {
+        AnimatedContent(currentItem, transitionSpec = {
+            fadeIn() with fadeOut()
+        }) {
+            KamelImage(
+                resource = asyncPainterResource(currentItem.thumbnailURL),
+                contentDescription = null,
+                contentScale = ContentScale.Crop,
+                modifier = Modifier.fillMaxSize(),
+            )
+        }
+        Box(
+            modifier =
+                Modifier
+                    .align(Alignment.BottomCenter)
+                    .fillMaxWidth()
+                    .fillMaxHeight(0.4f)
+                    .fadedBackground(MaterialTheme.colors.surface),
+        )
+        HorizontalPager(pagerState) {
+            val item = items[it]
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                verticalArrangement = Arrangement.Bottom,
+            ) {
+                Text(
+                    text = item.title,
+                    style = MaterialTheme.typography.h5.copy(fontWeight = FontWeight.Bold),
+                    modifier = Modifier.padding(16.dp),
+                )
+            }
         }
     }
 }

@@ -23,8 +23,7 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.pager.HorizontalPager
-import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.Icon
 import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
@@ -36,42 +35,39 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import animations.createGradientAnimation
 import features.events.ui.components.EventCard
+import features.gallery.ui.GalleryCard
 import features.home.presentation.HomeState
 import features.home.presentation.HomeViewModel
-import features.home.ui.components.CardItem
 import features.home.ui.components.EducationCard
 import features.home.ui.components.ExploreCard
-import features.gallery.ui.GalleryCard
 import features.home.ui.components.ListHeader
+import features.news.ui.components.newsHomePager
 import org.koin.compose.koinInject
 import theme.CosmosApp
 import theme.Dimensions
 import theme.defaultRadius
 import utils.DateFormats
 import utils.fadingEdgeTop
-import utils.fadingEdgeTopAndBottom
 import utils.getFormatted
-
-
-
-
 
 @Composable
 fun HomeHeader(isLoading: Boolean) {
     Box(
         modifier =
-        Modifier.fillMaxWidth()
-            .wrapContentHeight()
-            .animateContentSize(tween(500)),
+            Modifier
+                .fillMaxWidth()
+                .wrapContentHeight()
+                .animateContentSize(tween(500)),
     ) {
         TopAppBar(
             title = {
-                if(isLoading) {
+                if (isLoading) {
                     CosmosApp.Resources.icon(modifier = Modifier.createGradientAnimation())
                 } else {
                     CosmosApp.Resources.icon()
@@ -110,16 +106,16 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
             modifier = Modifier.fillMaxSize(),
             columns = GridCells.Fixed(2),
         ) {
-
             if (it is HomeState.Loading) {
                 item(span = { GridItemSpan(this.maxLineSpan) }) {
                     LinearProgressIndicator(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(Dimensions.padding16)
-                            .height(5.dp)
-                            .defaultRadius()
-                            .createGradientAnimation(),
+                        modifier =
+                            Modifier
+                                .fillMaxWidth()
+                                .padding(Dimensions.padding16)
+                                .height(5.dp)
+                                .defaultRadius()
+                                .createGradientAnimation(),
                         color = MaterialTheme.colors.primary,
                     )
                 }
@@ -140,20 +136,20 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                         }
                     }
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
-                        val pagerState = rememberPagerState(pageCount = { size })
-                        HorizontalPager(state = pagerState, modifier = Modifier.fillMaxWidth()) {
-                            val new = get(it)
-                            new.run {
-                                CardItem(title, description, thumbnailURL) {
-                                    CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.News, navController)
-                                }
-                            }
+                        newsHomePager(
+                            this@run,
+                            modifier =
+                                Modifier
+                                    .padding(Dimensions.padding16)
+                                    .fillMaxWidth()
+                                    .height(400.dp)
+                                    .clip(RoundedCornerShape(CosmosApp.Resources.defaultRadius)),
+                        ) {
+                            CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.News, navController)
                         }
                     }
-
                 }
                 it.page.events.run {
-
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
                         ListHeader("Próximos eventos") {
                             CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Events, navController)
@@ -176,8 +172,9 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                 it.page.discoveryCards.run {
                     item(span = { GridItemSpan((this.maxLineSpan)) }) {
                         ListHeader("Curiosidades") {
-                            CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Discovery,
-                                navController
+                            CosmosApp.Navigation.navigateTo(
+                                CosmosApp.Navigation.Pages.Discovery,
+                                navController,
                             )
                         }
                     }
@@ -186,9 +183,15 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                             items(count = size) { index ->
                                 val card = get(index)
                                 card.run {
-                                    ExploreCard(title, description, thumbnailURL, modifier = Modifier.clickable {
-                                        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Discovery, navController)
-                                    })
+                                    ExploreCard(
+                                        title,
+                                        description,
+                                        thumbnailURL,
+                                        modifier =
+                                            Modifier.clickable {
+                                                CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Discovery, navController)
+                                            },
+                                    )
                                 }
                             }
                         }
@@ -196,9 +199,15 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                 }
                 it.page.educationCard.run {
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
-                        EducationCard(title, description, thumbnailURL, modifier = Modifier.clickable {
-                            CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Education, navController)
-                        })
+                        EducationCard(
+                            title,
+                            description,
+                            thumbnailURL,
+                            modifier =
+                                Modifier.clickable {
+                                    CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Education, navController)
+                                },
+                        )
                     }
                 }
                 it.page.gallery.run {
@@ -209,24 +218,29 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                     }
                     items(count = size, span = {
                         val item = get(it)
-                        if (item == first()) GridItemSpan(this.maxLineSpan) else {
+                        if (item == first()) {
+                            GridItemSpan(this.maxLineSpan)
+                        } else {
                             GridItemSpan(1)
                         }
                     }) { index ->
                         val gallery = get(index)
                         gallery.run {
-                            GalleryCard(title, description, thumbnailURL, modifier = Modifier
-                                .fillMaxWidth()
-                                .height(200.dp)
-                                .let { if (index == 0) it.fadingEdgeTop() else it }
-                                .clickable {CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Gallery, navController) })
+                            GalleryCard(
+                                title,
+                                description,
+                                thumbnailURL,
+                                modifier =
+                                    Modifier
+                                        .fillMaxWidth()
+                                        .height(200.dp)
+                                        .let { if (index == 0) it.fadingEdgeTop() else it }
+                                        .clickable { CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Gallery, navController) },
+                            )
                         }
                     }
                 }
             }
         }
     }
-
-
 }
-

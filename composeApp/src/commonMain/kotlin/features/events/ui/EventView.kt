@@ -10,13 +10,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.pager.VerticalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.Icon
-import androidx.compose.material.IconButton
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
-import androidx.compose.material.TopAppBar
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowLeft
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -30,7 +24,6 @@ import features.events.ui.components.EventLargeCard
 import org.koin.compose.koinInject
 import theme.CosmosApp
 
-
 @Composable
 fun EventView() {
     val rootController = LocalNavController.current
@@ -38,15 +31,13 @@ fun EventView() {
     val state = viewModel.state.collectAsState().value
 
     Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.CenterHorizontally) {
-
-
         when (state) {
             is EventState.Error -> Text(text = "Ocorreu um erro ao carregar os eventos.")
             EventState.Loading -> CosmosApp.Resources.icon(modifier = Modifier.createGradientAnimation())
             is EventState.Success -> {
                 val events = state.events
                 val pagerState = rememberPagerState(pageCount = { events.size })
-                VerticalPager(pagerState) {
+                VerticalPager(pagerState, beyondBoundsPageCount = 4) {
                     val event = events[it]
                     EventLargeCard(
                         modifier = Modifier.align(Alignment.CenterHorizontally),

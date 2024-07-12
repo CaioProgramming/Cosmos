@@ -66,8 +66,6 @@ fun EventCard(
         mutableStateOf(DateFormats.DD_MM.localDateFormat?.format(parsedDate) ?: "")
     }
 
-
-
     Column(
         modifier =
             Modifier
@@ -81,7 +79,8 @@ fun EventCard(
     ) {
         Box(
             modifier =
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
                     .height(200.dp)
                     .defaultRadius(),
         ) {
@@ -108,14 +107,12 @@ fun EventCard(
                                 bottomStart = Corners.large,
                                 bottomEnd = Corners.large,
                             ),
-                        )
-                        .background(MaterialTheme.colors.surface)
+                        ).background(MaterialTheme.colors.surface)
                         .padding(4.dp)
                         .background(
                             MaterialTheme.colors.primary,
                             shape = RoundedCornerShape(Corners.small),
-                        )
-                        .padding(8.dp),
+                        ).padding(8.dp),
             )
         }
         Text(
@@ -144,26 +141,26 @@ fun EventLargeCard(
     countries: List<String>,
     extraInfo: List<String>,
 ) {
-
     val dateText by remember {
         val parsedDate = LocalDate.parse(date)
-        mutableStateOf(DateFormats.DD_OF_MMM.localDateFormat?.let {
-            parsedDate.format(it)
-        } ?: "")
+        mutableStateOf(
+            DateFormats.DD_OF_MMM.localDateFormat?.let {
+                parsedDate.format(it)
+            } ?: "",
+        )
     }
-
 
     Column(
         modifier =
             modifier
-                .fillMaxWidth()
                 .padding(16.dp)
                 .defaultRadius()
                 .background(MaterialTheme.colors.surface),
     ) {
         Box(
             modifier =
-                Modifier.fillMaxWidth()
+                Modifier
+                    .fillMaxWidth()
                     .height(400.dp),
         ) {
             KamelImage(
@@ -189,14 +186,12 @@ fun EventLargeCard(
                                 bottomStart = Corners.medium,
                                 bottomEnd = Corners.medium,
                             ),
-                        )
-                        .background(MaterialTheme.colors.surface)
+                        ).background(MaterialTheme.colors.surface)
                         .padding(4.dp)
                         .background(
                             MaterialTheme.colors.primary,
                             shape = RoundedCornerShape(Corners.extraLarge),
-                        )
-                        .padding(8.dp),
+                        ).padding(8.dp),
             )
 
             Row(
@@ -239,7 +234,7 @@ fun PopupButton(
     title: String,
     items: List<String>,
     icon: Painter,
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
 ) {
     Menu(modifier.padding(8.dp)) {
         MenuButton(modifier = Modifier.clip(CircleShape)) {

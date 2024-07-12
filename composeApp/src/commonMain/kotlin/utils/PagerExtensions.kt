@@ -123,3 +123,28 @@ fun Modifier.pagerZoomTransition(pagerState: PagerState) =
         scaleX = scale
         scaleY = scale
     }
+
+@Composable
+fun Modifier.pagerStack(
+    position: Int,
+    pagerState: PagerState,
+) = graphicsLayer {
+    val pageOffSet =
+        (
+            (pagerState.currentPage - position) +
+                pagerState
+                    .currentPageOffsetFraction
+        ).absoluteValue
+    alpha =
+        lerp(
+            start = 0.5f,
+            stop = 1f,
+            fraction = 1f - pageOffSet.coerceIn(0f, 1f),
+        )
+    scaleY =
+        lerp(
+            start = 0.75f,
+            stop = 1f,
+            fraction = 1f - pageOffSet.coerceIn(0f, 1f),
+        )
+}

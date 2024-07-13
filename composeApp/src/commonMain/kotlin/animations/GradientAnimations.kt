@@ -14,11 +14,14 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.BlendMode
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.LinearGradient
 import androidx.compose.ui.graphics.graphicsLayer
+import theme.CosmosApp
 
 @Composable
-fun Modifier.createGradientAnimation(colors: List<Color>, gradientType: GradientType = GradientType.LINEAR): Modifier {
+fun Modifier.createGradientAnimation(
+    colors: List<Color> = CosmosApp.Colors.themeColors(),
+    gradientType: GradientType = GradientType.LINEAR,
+): Modifier {
     val infiniteTransition = rememberInfiniteTransition()
     val offsetAnimation =
         infiniteTransition.animateFloat(
@@ -31,22 +34,25 @@ fun Modifier.createGradientAnimation(colors: List<Color>, gradientType: Gradient
                 ),
         )
 
+    val gradient =
+        when (gradientType) {
+            GradientType.LINEAR ->
+                Brush.linearGradient(
+                    colors,
+                    start = Offset(offsetAnimation.value, offsetAnimation.value),
+                )
+            GradientType.RADIAL ->
+                Brush.radialGradient(
+                    colors,
+                    center = Offset(offsetAnimation.value, offsetAnimation.value),
+                )
+            GradientType.SWEEP ->
+                Brush.sweepGradient(
+                    colors,
+                )
+        }
 
-    val gradient = when (gradientType) {
-        GradientType.LINEAR -> Brush.linearGradient(
-            colors,
-            start = Offset(offsetAnimation.value, offsetAnimation.value)
-        )
-        GradientType.RADIAL -> Brush.radialGradient(
-            colors,
-            center = Offset(offsetAnimation.value, offsetAnimation.value)
-        )
-        GradientType.SWEEP -> Brush.sweepGradient(
-            colors
-        )
-    }
-
-    return Modifier
+    return this
         .graphicsLayer(alpha = 0.99f)
         .drawWithCache {
             onDrawWithContent {
@@ -56,26 +62,31 @@ fun Modifier.createGradientAnimation(colors: List<Color>, gradientType: Gradient
         }
 }
 
-fun Modifier.createGradientBackground(colors: List<Color>, gradientType: GradientType = GradientType.LINEAR): Modifier {
-    val gradient = when (gradientType) {
-        GradientType.LINEAR -> Brush.linearGradient(
-            colors
-        )
-        GradientType.RADIAL -> Brush.radialGradient(
-            colors
-        )
-        GradientType.SWEEP -> Brush.sweepGradient(
-            colors
-        )
-    }
+fun Modifier.createGradientBackground(
+    colors: List<Color>,
+    gradientType: GradientType = GradientType.LINEAR,
+): Modifier {
+    val gradient =
+        when (gradientType) {
+            GradientType.LINEAR ->
+                Brush.linearGradient(
+                    colors,
+                )
+            GradientType.RADIAL ->
+                Brush.radialGradient(
+                    colors,
+                )
+            GradientType.SWEEP ->
+                Brush.sweepGradient(
+                    colors,
+                )
+        }
 
     return Modifier.background(gradient)
 }
 
-
 enum class GradientType {
     LINEAR,
     RADIAL,
-    SWEEP
+    SWEEP,
 }
-

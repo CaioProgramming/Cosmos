@@ -27,6 +27,8 @@ dependencyResolutionManagement {
         mavenCentral()
         maven("https://jitpack.io")
         maven("https://repo.repsy.io/mvn/chrynan/public")
+        maven("https://maven.pkg.jetbrains.space/kotlin/p/wasm/experimental")
+
     }
 }
 

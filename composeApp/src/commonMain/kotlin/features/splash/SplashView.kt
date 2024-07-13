@@ -1,5 +1,6 @@
 package features.splash
 
+import LocalNavController
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -15,24 +16,19 @@ import androidx.navigation.NavController
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
 import com.chrynan.colors.compose.toComposeColor
-import com.chrynan.colors.extension.CornflowerBlue
-import com.chrynan.colors.extension.MediumPurple
-import com.chrynan.colors.extension.Purple
-import features.login.LoginPage
 import kotlinx.coroutines.coroutineScope
 import kotlinx.coroutines.delay
 import org.jetbrains.compose.ui.tooling.preview.Preview
-import theme.CosmosIcon
-import theme.Typo
+import theme.CosmosApp
 
-object SplashPage {
-    val tag = "SplashPage"
-}
 @Composable
-fun SplashView(navController: NavController) {
-
+fun SplashView(navController: NavController = LocalNavController.current) {
     fun navigateToLogin() {
-        navController.navigate(LoginPage.tag)
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Login, navController)
+    }
+
+    fun navigateToHome() {
+        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Home, navController)
     }
 
     Column(
@@ -40,40 +36,28 @@ fun SplashView(navController: NavController) {
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
     ) {
-        val purple = Color.Companion.Purple.toComposeColor()
-        val purpleMedium = Color.Companion.MediumPurple.toComposeColor()
-        val blue = Color.Companion.CornflowerBlue.toComposeColor()
         Row(verticalAlignment = Alignment.CenterVertically) {
-            CosmosIcon(
+            CosmosApp.Resources.largeIcon(
                 modifier =
-                Modifier.createGradientAnimation(
-                    listOf(
-                        MaterialTheme.colors.primary,
-                        blue,
-                        purpleMedium,
-                        purple,
-                    ),
-                ).clickable {
-                    navigateToLogin()
-                },
+                    Modifier.createGradientAnimation(CosmosApp.Colors.themeColors()).clickable {
+                        navigateToLogin()
+                    },
             )
 
             Text(
                 text = "osmos",
-                style = MaterialTheme.typography.h4.copy(fontFamily = Typo.headFontFamily()),
-                color = Color.White.toComposeColor())
+                style = MaterialTheme.typography.h4.copy(fontFamily = CosmosApp.Typo.headFontFamily()),
+                color = Color.White.toComposeColor(),
+            )
         }
-
     }
 
     LaunchedEffect(Unit) {
         coroutineScope {
             delay(2000)
-            navigateToLogin()
+            navigateToHome()
         }
     }
-
-
 
     @Preview
     @Composable

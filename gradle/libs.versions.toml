@@ -4,22 +4,32 @@ android-compileSdk = "34"
 android-minSdk = "24"
 android-targetSdk = "34"
 androidx-activityCompose = "1.9.0"
-androidx-appcompat = "1.6.1"
+androidx-appcompat = "1.7.0"
 androidx-constraintlayout = "2.1.4"
 androidx-core-ktx = "1.13.1"
-androidx-espresso-core = "3.5.1"
+androidx-espresso-core = "3.6.1"
 androidx-material = "1.12.0"
-androidx-test-junit = "1.1.5"
+androidx-test-junit = "1.2.1"
+androidx-compose = "1.7.0-beta04"
 compose-plugin = "1.6.10"
 junit = "4.13.2"
 kotlin = "2.0.0"
+kotlinX = "1.7.0-RC"
 material3Android = "1.2.1"
 navigation-compose = "2.7.0-alpha07"
-composeResource = "1.4.0"
+composeResource = "1.6.10"
+kotlinxDateTime = "0.6.0"
+ktor= "2.3.7"
 chRyNaNColors = "1.1.0"
 compottie = "1.1.2"
 
-
+koin = "3.4.3"
+koin-composeVersion = "1.0.4"
+kamel = "0.9.5"
+composables-ui-menu = "1.4.0"
+google-accompanist-navigation-animation = "0.34.0"
+material3Desktop = "1.2.1"
+navigationCommonKtx = "2.7.7"
 [libraries]
 kotlin-test = { module = "org.jetbrains.kotlin:kotlin-test", version.ref = "kotlin" }
 kotlin-test-junit = { module = "org.jetbrains.kotlin:kotlin-test-junit", version.ref = "kotlin" }
@@ -32,8 +42,34 @@ androidx-material = { group = "com.google.android.material", name = "material", 
 androidx-constraintlayout = { group = "androidx.constraintlayout", name = "constraintlayout", version.ref = "androidx-constraintlayout" }
 androidx-activity-compose = { module = "androidx.activity:activity-compose", version.ref = "androidx-activityCompose" }
 androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
+androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "androidx-compose" }
+androidx-compose-animation-core = { group = "androidx.compose.animation", name = "animation-core", version.ref = "androidx-compose" }
+androidx-compose-animation = { group = "androidx.compose.animation", name = "animation", version.ref = "androidx-compose" }
+androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime", version.ref = "androidx-compose" }
+google-accompanist-navigation-animation = { group = "com.google.accompanist", name = "accompanist-navigation-animation", version.ref = "google-accompanist-navigation-animation" }
+dev-chrisbanes-haze = { group = "dev.chrisbanes.haze", name = "haze-jetpack-compose", version = "0.4.1" }
+
 navigation-compose = { group = "org.jetbrains.androidx.navigation", name= "navigation-compose", version.ref = "navigation-compose" }
 composeResource = { group = "org.jetbrains.compose.components", name = "components-resources", version.ref = "composeResource" }
+kotlinDateTime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref= "kotlinxDateTime" }
+kotlinx-serialization = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinX" }
+
+
+ktor-client-core = { module = "io.ktor:ktor-client-core", version.ref = "ktor" }
+ktor-client-okhttp = { module = "io.ktor:ktor-client-okhttp", version.ref = "ktor" }
+ktor-client-darwin = { module = "io.ktor:ktor-client-darwin", version.ref = "ktor" }
+ktor-client-cio = {module ="io.ktor:ktor-client-cio", version.ref = "ktor"}
+ktor-client-android = { module = "io.ktor:ktor-client-android", version.ref = "ktor" }
+kotlin-serialization = {module = "io.ktor:ktor-serialization-kotlinx-json", version.ref="ktor"}
+media-kamel = {module="media.kamel:kamel-image", version.ref="kamel"}
+ktor-client-content-negotiation = {module = "io.ktor:ktor-client-content-negotiation", version.ref= "ktor"}
+
+
+
+
+koin-android = { module = "io.insert-koin:koin-android", version.ref = "koin" }
+koin-core = { module = "io.insert-koin:koin-core", version.ref = "koin" }
+koin-compose = { module = "io.insert-koin:koin-compose", version.ref = "koin-composeVersion"}
 
 chrynan-colorsCore = { group = "com.chrynan.colors", name = "colors-core", version.ref = "chRyNaNColors" }
 chrynan-colorsExtensions = { group = "com.chrynan.colors", name = "colors-extension", version.ref = "chRyNaNColors" }
@@ -41,9 +77,18 @@ chrynan-colorsTheme = { group = "com.chrynan.colors", name = "colors-theme", ver
 chrynan-colorsPalette = { group = "com.chrynan.colors", name = "colors-palette", version.ref = "chRyNaNColors" }
 chrynan-colorsCompose = { group = "com.chrynan.colors", name = "colors-compose", version.ref = "chRyNaNColors" }
 alexzhirkevich-Compottie = { group = "io.github.alexzhirkevich", name = "compottie", version.ref = "compottie" }
+
+composables-ui-menu = { group = "com.composables.ui", name = "menu", version.ref = "composables-ui-menu" }
+androidx-material3-desktop = { group = "androidx.compose.material3", name = "material3-desktop", version.ref = "material3Desktop" }
+androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version.ref = "navigationCommonKtx" }
+
 [plugins]
 androidApplication = { id = "com.android.application", version.ref = "agp" }
 androidLibrary = { id = "com.android.library", version.ref = "agp" }
 jetbrainsCompose = { id = "org.jetbrains.compose", version.ref = "compose-plugin" }
 compose-compiler = { id = "org.jetbrains.kotlin.plugin.compose", version.ref = "kotlin" }
 kotlinMultiplatform = { id = "org.jetbrains.kotlin.multiplatform", version.ref = "kotlin" }
+kotlinSerialization = { id = "org.jetbrains.kotlin.plugin.serialization", version.ref = "kotlin" }
+
+[bundles]
+ktor = ["ktor-client-core", "ktor-client-content-negotiation"]

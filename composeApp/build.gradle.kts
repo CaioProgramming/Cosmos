@@ -53,10 +53,7 @@ kotlin {
             implementation(compose.components.resources)
             implementation(compose.components.uiToolingPreview)
             implementation(compose.material3)
-            // implementation(libs.google.accompanist.navigation.animation)
-            /*implementation(libs.androidx.compose.ui)
-            implementation(libs.androidx.compose.animation)
-            implementation(libs.androidx.compose.animation.core)*/
+
             implementation(libs.chrynan.colorsCore)
             implementation(libs.chrynan.colorsExtensions)
             implementation(libs.chrynan.colorsTheme)
@@ -68,6 +65,7 @@ kotlin {
             implementation(libs.kotlinDateTime)
             implementation(libs.bundles.ktor)
             implementation(libs.ktor.client.content.negotiation)
+
             implementation(libs.kotlin.serialization)
             implementation(libs.media.kamel)
             // implementation(libs.ktor.core)

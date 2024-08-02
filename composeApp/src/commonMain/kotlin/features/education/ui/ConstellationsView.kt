@@ -13,8 +13,6 @@ import androidx.compose.animation.core.EaseIn
 import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateFloatAsState
-import androidx.compose.animation.core.animateIntAsState
-import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.infiniteRepeatable
 import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
@@ -45,7 +43,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,27 +86,29 @@ fun StarryBackground(
             mutableStateOf(emptyList<Offset>())
         }
     val infiniteTransition = rememberInfiniteTransition()
-    val starAnimation = infiniteTransition.animateFloat(
-        initialValue = 0f,
-        targetValue = offsets.value.size.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(5000, easing = EaseIn),
-            repeatMode = RepeatMode.Reverse,
-        ),
-    )
-
-
+    val starAnimation =
+        infiniteTransition.animateFloat(
+            initialValue = 0f,
+            targetValue = offsets.value.size.toFloat(),
+            animationSpec =
+                infiniteRepeatable(
+                    animation = tween(5000, easing = EaseIn),
+                    repeatMode = RepeatMode.Reverse,
+                ),
+        )
 
     Box(modifier) {
         offsets.value.forEachIndexed { index, offset ->
-            val glowAnimation = animateFloatAsState(
-                targetValue = if (index <= starAnimation.value) 20f else 5f,
-                animationSpec = tween(2000),
-            ).value
-            val alphaAnimation = animateFloatAsState(
-                targetValue = if (index <= starAnimation.value) 0.9f else 0.3f,
-                animationSpec = tween(2000),
-            ).value
+            val glowAnimation =
+                animateFloatAsState(
+                    targetValue = if (index <= starAnimation.value) 20f else 5f,
+                    animationSpec = tween(2000),
+                ).value
+            val alphaAnimation =
+                animateFloatAsState(
+                    targetValue = if (index <= starAnimation.value) 0.9f else 0.3f,
+                    animationSpec = tween(2000),
+                ).value
             Image(
                 painterResource(Res.drawable.ic_const),
                 contentDescription = null,
@@ -158,10 +157,12 @@ fun ConstellationsView(constellations: List<Constellation>) {
     Box(modifier = Modifier.background(background).fillMaxWidth()) {
         StarryBackground(
             constellations.size,
-            modifier = Modifier.padding(Dimensions.padding16)
-                .fillMaxWidth()
-                .height(250.dp)
-                .align(Alignment.TopCenter),
+            modifier =
+                Modifier
+                    .padding(Dimensions.padding16)
+                    .fillMaxWidth()
+                    .height(250.dp)
+                    .align(Alignment.TopCenter),
         )
         Column {
             VerticalPager(
@@ -279,7 +280,7 @@ fun ConstellationInfo(
         }
 
         item(span = { GridItemSpan(this.maxLineSpan) }) {
-            AnimatedVisibility(visible  = constellation.nickNames.isNotEmpty(), enter = slideInVertically(), exit = fadeOut()) {
+            AnimatedVisibility(visible = constellation.nickNames.isNotEmpty(), enter = slideInVertically(), exit = fadeOut()) {
                 DetailCard(
                     title = "Nomes Alternativos",
                     value = constellation.nickNames.joinToString(),
@@ -288,6 +289,5 @@ fun ConstellationInfo(
                 )
             }
         }
-
     }
 }

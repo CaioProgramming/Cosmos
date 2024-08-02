@@ -1,13 +1,26 @@
 package theme
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.EnterTransition
+import androidx.compose.animation.ExitTransition
+import androidx.compose.animation.ExperimentalAnimationApi
+import androidx.compose.animation.core.EaseIn
+import androidx.compose.animation.core.RepeatMode
 import androidx.compose.animation.core.animateDpAsState
-import androidx.compose.animation.core.animateFloatAsState
+import androidx.compose.animation.core.animateFloat
+import androidx.compose.animation.core.infiniteRepeatable
+import androidx.compose.animation.core.rememberInfiniteTransition
 import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleOut
+import androidx.compose.animation.slideInHorizontally
 import androidx.compose.animation.slideInVertically
+import androidx.compose.animation.slideOutHorizontally
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -19,8 +32,8 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.darkColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
@@ -31,9 +44,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
-import com.chrynan.colors.compose.toComposeColor
 import com.ilustris.cosmos.resources.Res
-import com.ilustris.cosmos.resources.astronaut_placeholder
 import com.ilustris.cosmos.resources.heart_fill_24
 import com.ilustris.cosmos.resources.heart_outline_24
 import com.ilustris.cosmos.resources.home_24_fill
@@ -50,7 +61,7 @@ import features.gallery.ui.GallerySlidesView
 import features.gallery.ui.GalleryView
 import features.home.ui.HomeView
 import features.login.LoginView
-import features.news.ui.NewsView
+import features.news.ui.NewsList
 import features.splash.SplashView
 import org.jetbrains.compose.resources.DrawableResource
 import org.jetbrains.compose.resources.Font
@@ -197,7 +208,8 @@ object CosmosApp {
             print("\n navigating to page => ${page.pageConfig.key}: $route")
             route = route.replaceArgs(args)
             print("\n formatted route => $route")
-            navController.navigate(route)
+            navController.navigate(route) {
+            }
         }
 
         data class IconConfig(
@@ -223,6 +235,8 @@ object CosmosApp {
             val icon: IconConfig? = null,
             val showBottomNav: Boolean = false,
             val showAppBar: Boolean = true,
+            val enterTransition: EnterTransition = fadeIn(tween(1000, easing = EaseIn)),
+            val exitTransition: ExitTransition = fadeOut(tween(500, easing = EaseIn)),
             val view:
                 @Composable (Map<String, String?>) -> Unit = { Resources.animatedIcon(Modifier.size(64.dp)) },
         ) {
@@ -267,7 +281,7 @@ object CosmosApp {
                     title = "Meu Perfil",
                     key = "Profile",
                 ),
-                icon = IconConfig(Res.drawable.ic_astronaut, Res.drawable.astronaut_placeholder),
+                icon = IconConfig(Res.drawable.ic_astronaut, Res.drawable.ic_astronaut),
                 showBottomNav = true,
             ),
             Events(
@@ -282,7 +296,25 @@ object CosmosApp {
                     "Notícias",
                     "News",
                 ),
-                view = { NewsView() },
+                showAppBar = false,
+                enterTransition = slideInHorizontally { 1 },
+                exitTransition = slideOutHorizontally { -1 },
+                view = { NewsList() },
+            ),
+            NewsDetails(
+                PageConfig(
+                    emptyString(),
+                    "DetailNew",
+                    arguments = listOf(navArgument("id") { type = NavType.StringType }),
+                ),
+                showBottomNav = true,
+                showAppBar = false,
+                enterTransition = slideInHorizontally { 1 },
+                exitTransition = slideOutHorizontally { -1 },
+                view = {
+                    val id = it["id"]
+                    id?.let { it1 -> features.news.ui.newsDetails(it1) }
+                },
             ),
             Gallery(
                 PageConfig(
@@ -358,6 +390,7 @@ object CosmosApp {
             }
         }
 
+        @OptIn(ExperimentalAnimationApi::class)
         @Composable
         fun BottomNav(
             currentPage: Pages?,
@@ -370,51 +403,55 @@ object CosmosApp {
                 exit = scaleOut(),
             ) {
                 BottomNavigation(
-                    backgroundColor = Colors.LightBackground,
+                    backgroundColor = MaterialTheme.colors.background,
+                    elevation = 0.dp,
                     contentColor = Colors.Black,
-                    modifier = Modifier.padding(Dimensions.padding16).shapeRadius20(),
+                    modifier = Modifier.navigationBarsPadding().fillMaxWidth(),
                 ) {
                     Pages.entries.filter { it.icon != null }.forEach { page ->
                         val selected = currentPage == page
-                        val color = Color.Black.toComposeColor().copy(alpha = 0.8f)
-                        val alpha = animateFloatAsState(if (selected) 1f else 0.5f, tween(300))
-                        val size = animateDpAsState(if (selected) 32.dp else 24.dp, tween(300))
+                        val color = MaterialTheme.colors.onBackground
+                        val size = 48.dp
+                        val borderWidth = animateDpAsState(if (selected) 2.dp else 0.dp).value
                         BottomNavigationItem(
                             icon = {
+                                val infiniteTransition = rememberInfiniteTransition()
+                                val offsetAnimation =
+                                    infiniteTransition.animateFloat(
+                                        initialValue = 0f,
+                                        targetValue = 100f,
+                                        animationSpec =
+                                            infiniteRepeatable(
+                                                tween(5000, easing = EaseIn),
+                                                repeatMode = RepeatMode.Reverse,
+                                            ),
+                                    )
                                 val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
-                                if (page != Pages.Profile) {
-                                    Icon(
-                                        painterResource(currentIcon ?: Res.drawable.moon_24),
-                                        contentDescription = page.pageConfig.title,
-                                        tint = color,
-                                        modifier = Modifier.size(size.value).alpha(alpha.value),
-                                    )
-                                } else {
-                                    val border =
-                                        if (selected) {
-                                            Modifier.border(
-                                                2.dp,
-                                                Resources.backGroundBrush(),
+                                Icon(
+                                    painterResource(currentIcon ?: Res.drawable.moon_24),
+                                    contentDescription = page.pageConfig.title,
+                                    tint = color,
+                                    modifier =
+                                        Modifier
+                                            .size(size)
+                                            .background(MaterialTheme.colors.background, CircleShape)
+                                            .border(
+                                                borderWidth,
+                                                Brush.radialGradient(
+                                                    Colors.themeColors(),
+                                                    center =
+                                                        if (selected) {
+                                                            Offset(
+                                                                offsetAnimation.value,
+                                                                offsetAnimation.value,
+                                                            )
+                                                        } else {
+                                                            Offset.Zero
+                                                        },
+                                                ),
                                                 CircleShape,
-                                            )
-                                        } else {
-                                            Modifier.border(
-                                                2.dp,
-                                                MaterialTheme.colors.background.copy(alpha = 0.3f),
-                                                CircleShape,
-                                            )
-                                        }
-                                    Icon(
-                                        painterResource(Res.drawable.ic_astronaut),
-                                        contentDescription = page.pageConfig.title,
-                                        tint = Color.White.toComposeColor(),
-                                        modifier =
-                                            border
-                                                .background(Color.Black.toComposeColor().copy(alpha = 0.4f), CircleShape)
-                                                .size(size.value)
-                                                .clip(CircleShape),
-                                    )
-                                }
+                                            ).padding(Dimensions.padding16),
+                                )
                             },
                             selected = selected,
                             onClick = {

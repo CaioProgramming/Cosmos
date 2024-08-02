@@ -14,10 +14,14 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.animation.scaleIn
 import androidx.compose.animation.scaleOut
 import androidx.compose.animation.with
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -33,6 +37,8 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.TileMode
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
@@ -44,11 +50,12 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.chrynan.colors.Color
+import com.chrynan.colors.compose.toComposeColor
 import com.ilustris.cosmos.resources.Res
 import com.ilustris.cosmos.resources.ic_left
 import com.ilustris.cosmos.resources.moon_24
 import di.CommonModule
-import features.discovery.ui.DiscoveryDetail
 import org.jetbrains.compose.resources.painterResource
 import org.koin.compose.KoinApplication
 import org.koin.core.context.loadKoinModules
@@ -157,31 +164,61 @@ fun App() {
                 ) { padding ->
 
                     val isShowingBottomNav = currentPage?.showBottomNav == true
-                    val padding = animateDpAsState(if (isShowingBottomNav) 50.dp else 0.dp, tween(1000))
+                    val navigationPadding = animateDpAsState(if (isShowingBottomNav) 50.dp else 0.dp, tween(1000))
 
-                    NavHost(
-                        modifier = Modifier.fillMaxSize().padding(bottom = padding.value),
-                        navController = navController,
-                        startDestination = CosmosApp.Navigation.Pages.Splash.pageConfig.route,
-                    ) {
-                        CosmosApp.Navigation.Pages.entries.forEach { page ->
-                            print("\nPage: ${page.pageConfig.route}\n")
-                            composable(
-                                page.pageConfig.route,
-                                deepLinks =
-                                    listOf(
-                                        NavDeepLink
-                                            .Builder()
-                                            .setUriPattern(page.pageConfig.route)
-                                            .build(),
-                                    ),
-                            ) {backStackEntry ->
-                                val args = page.pageConfig.arguments.associate {
-                                    it.name to backStackEntry.arguments?.getString(it.name)
+                    Box(modifier = Modifier.fillMaxSize().padding(bottom = navigationPadding.value)) {
+                        NavHost(
+                            modifier = Modifier.fillMaxSize().padding(bottom = navigationPadding.value),
+                            navController = navController,
+                            startDestination = CosmosApp.Navigation.Pages.Splash.pageConfig.route,
+                        ) {
+                            CosmosApp.Navigation.Pages.entries.forEach { page ->
+                                print("\nPage: ${page.pageConfig.route}\n")
+                                composable(
+                                    page.pageConfig.route,
+                                    enterTransition = { page.enterTransition },
+                                    exitTransition = { page.exitTransition },
+                                    deepLinks =
+                                        listOf(
+                                            NavDeepLink
+                                                .Builder()
+                                                .setUriPattern(page.pageConfig.route)
+                                                .build(),
+                                        ),
+                                ) { backStackEntry ->
+                                    val args =
+                                        page.pageConfig.arguments.associate {
+                                            it.name to backStackEntry.arguments?.getString(it.name)
+                                        }
+                                    page.view(args)
                                 }
-                                page.view(args)
-
                             }
+                        }
+
+                        AnimatedVisibility(
+                            !isNavBarHidden(),
+                            enter = fadeIn(),
+                            exit = fadeOut(),
+                            modifier = Modifier.align(Alignment.BottomCenter),
+                        ) {
+                            Box(
+                                modifier =
+                                    Modifier
+                                        .navigationBarsPadding()
+                                        .fillMaxWidth()
+                                        .height(150.dp)
+                                        .background(
+                                            Brush.verticalGradient(
+                                                colorStops =
+                                                    arrayOf(
+                                                        0.0f to Color.Transparent.toComposeColor(),
+                                                        0.2f to MaterialTheme.colors.background.copy(alpha = 0.5f),
+                                                        1.0f to MaterialTheme.colors.background,
+                                                    ),
+                                                tileMode = TileMode.Decal,
+                                            ),
+                                        ),
+                            )
                         }
                     }
                 }

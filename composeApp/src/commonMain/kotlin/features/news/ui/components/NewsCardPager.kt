@@ -14,23 +14,18 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.Button
-import androidx.compose.material.ButtonDefaults
 import androidx.compose.material.Icon
 import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.rounded.KeyboardArrowRight
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -48,8 +43,10 @@ import kotlinx.coroutines.launch
 import theme.shapeRadius10
 
 @Composable
-fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
-
+fun NewsCardPager(
+    items: List<DefaultCard>,
+    reference: Reference,
+) {
     val requestedLink = mutableStateOf<String?>(null)
     val uriHandler = LocalUriHandler.current
 
@@ -58,15 +55,17 @@ fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
         requestedLink.value = null
     }
 
-
-
-
-
     val pagerState = rememberPagerState(pageCount = { items.size })
     val currentItem = items[pagerState.currentPage]
     val coroutineScope = rememberCoroutineScope()
     Column(
-        modifier = Modifier.fillMaxWidth().padding(16.dp).shapeRadius10().background(MaterialTheme.colors.surface).animateContentSize(),
+        modifier =
+            Modifier
+                .fillMaxWidth()
+                .padding(16.dp)
+                .shapeRadius10()
+                .background(MaterialTheme.colors.surface)
+                .animateContentSize(),
     ) {
         HorizontalPager(pagerState) {
             val item = items[it]
@@ -83,12 +82,21 @@ fun NewsCardPager(items: List<DefaultCard>, reference: Reference) {
             enter = fadeIn(),
             exit = fadeOut(tween(1000)),
         ) {
-            Row(modifier = Modifier
-                .fillMaxWidth()
-                .background(MaterialTheme.colors.primary)
-                .padding(horizontal = 16.dp, vertical = 4.dp)
-                .clickable { openUrl(reference.link) }, horizontalArrangement = Arrangement.SpaceBetween, verticalAlignment = Alignment.CenterVertically) {
-                Text(text = "Veja mais em ${reference.author}", style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold), textAlign = TextAlign.Start)
+            Row(
+                modifier =
+                    Modifier
+                        .fillMaxWidth()
+                        .background(MaterialTheme.colors.primary)
+                        .padding(horizontal = 16.dp, vertical = 4.dp)
+                        .clickable { openUrl(reference.link) },
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = "Veja mais em ${reference.author}",
+                    style = MaterialTheme.typography.caption.copy(fontWeight = FontWeight.Bold),
+                    textAlign = TextAlign.Start,
+                )
                 Icon(
                     Icons.AutoMirrored.Rounded.KeyboardArrowRight,
                     contentDescription = null,

@@ -422,7 +422,7 @@ object CosmosApp {
                                         targetValue = 100f,
                                         animationSpec =
                                             infiniteRepeatable(
-                                                tween(5000, easing = EaseIn),
+                                                tween(3000, easing = EaseIn),
                                                 repeatMode = RepeatMode.Reverse,
                                             ),
                                     )
@@ -437,9 +437,9 @@ object CosmosApp {
                                             .background(MaterialTheme.colors.background, CircleShape)
                                             .border(
                                                 borderWidth,
-                                                Brush.radialGradient(
+                                                Brush.linearGradient(
                                                     Colors.themeColors(),
-                                                    center =
+                                                    start =
                                                         if (selected) {
                                                             Offset(
                                                                 offsetAnimation.value,

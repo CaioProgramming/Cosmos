@@ -147,7 +147,7 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                     }
                     item(span = { GridItemSpan(this.maxLineSpan) }) {
                         val pagerState = rememberPagerState(pageCount = { size })
-                        val currentPage = this@run.get(pagerState.currentPage)
+                        val currentPage = this@run[pagerState.currentPage]
                         val coroutineScope = rememberCoroutineScope()
                         Box(
                             modifier =
@@ -185,11 +185,12 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                                 modifier = Modifier.fillMaxWidth().padding(Dimensions.padding16).align(Alignment.TopCenter),
                                 enableAutoSwipe = true,
                                 onFinishPageLoad = {
+                                    print("Finished loading page $it")
                                     coroutineScope.launch {
                                         pagerState.animateScrollToPage(it + 1)
                                     }
                                 },
-                                {
+                                onSelectIndicator = {
                                     coroutineScope.launch {
                                         pagerState.animateScrollToPage(it)
                                     }

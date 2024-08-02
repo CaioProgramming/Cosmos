@@ -206,7 +206,7 @@ fun App() {
                                     Modifier
                                         .navigationBarsPadding()
                                         .fillMaxWidth()
-                                        .height(150.dp)
+                                        .height(125.dp)
                                         .background(
                                             Brush.verticalGradient(
                                                 colorStops =

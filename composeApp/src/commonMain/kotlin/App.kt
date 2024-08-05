@@ -21,7 +21,6 @@ import androidx.compose.foundation.layout.displayCutoutPadding
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
@@ -204,9 +203,9 @@ fun App() {
                             Box(
                                 modifier =
                                     Modifier
-                                        .navigationBarsPadding()
+                                        .padding(vertical = 50.dp)
                                         .fillMaxWidth()
-                                        .height(125.dp)
+                                        .height(50.dp)
                                         .background(
                                             Brush.verticalGradient(
                                                 colorStops =

@@ -44,6 +44,7 @@ import androidx.navigation.NavType
 import androidx.navigation.navArgument
 import animations.createGradientAnimation
 import com.chrynan.colors.Color
+import com.chrynan.colors.compose.toComposeColor
 import com.ilustris.cosmos.resources.Res
 import com.ilustris.cosmos.resources.heart_fill_24
 import com.ilustris.cosmos.resources.heart_outline_24
@@ -86,7 +87,7 @@ object CosmosApp {
     )
 
     object Resources {
-        val defaultRadius = Corners.large
+        val defaultRadius = Corners.extraLarge
 
         @Composable
         fun icon(
@@ -290,6 +291,7 @@ object CosmosApp {
                     "Events",
                 ),
                 view = { EventView() },
+                showBottomNav = true,
             ),
             News(
                 PageConfig(
@@ -427,6 +429,15 @@ object CosmosApp {
                                             ),
                                     )
                                 val currentIcon = if (selected) page.icon?.filledIcon else page.icon?.outlineIcon
+                                val brushColors =
+                                    if (selected) {
+                                        Colors.themeColors()
+                                    } else {
+                                        listOf(
+                                            MaterialTheme.colors.background,
+                                            Color.Transparent.toComposeColor(),
+                                        )
+                                    }
                                 Icon(
                                     painterResource(currentIcon ?: Res.drawable.moon_24),
                                     contentDescription = page.pageConfig.title,
@@ -438,7 +449,7 @@ object CosmosApp {
                                             .border(
                                                 borderWidth,
                                                 Brush.linearGradient(
-                                                    Colors.themeColors(),
+                                                    brushColors,
                                                     start =
                                                         if (selected) {
                                                             Offset(

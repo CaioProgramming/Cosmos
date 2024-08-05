@@ -81,7 +81,8 @@ fun newsDetails(newsId: String) {
             when (it) {
                 NewsState.Error -> Text("Ocorreu um erro inesperado", modifier = Modifier.align(Alignment.Center))
                 is NewsState.DetailSuccess -> newsPageData(it.news, uriHandler, Modifier.fillMaxSize())
-                else -> CosmosApp.Resources.animatedIcon(modifier = Modifier.align(Alignment.Center))
+                NewsState.Loading -> CosmosApp.Resources.animatedIcon(modifier = Modifier.align(Alignment.Center))
+                else -> Box {}
             }
         }
     }

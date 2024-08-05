@@ -14,6 +14,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -46,7 +47,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import animations.createGradientAnimation
-import features.events.ui.components.EventCard
+import features.events.ui.eventPager
 import features.gallery.ui.GalleryCard
 import features.home.presentation.HomeState
 import features.home.presentation.HomeViewModel
@@ -223,16 +224,13 @@ fun HomeView(viewModel: HomeViewModel = koinInject<HomeViewModel>()) {
                     }
 
                     item(span = { GridItemSpan((this.maxLineSpan)) }) {
-                        LazyRow {
-                            items(size) {
-                                val event = get(it)
-                                event.run {
-                                    EventCard(title, description, date, thumbnailURL) {
-                                        CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Events, navController)
-                                    }
-                                }
-                            }
-                        }
+                        eventPager(
+                            events = this@run,
+                            modifier = Modifier.fillMaxWidth().fillMaxHeight(.4f),
+                            onSelectEvent = {
+                                CosmosApp.Navigation.navigateTo(CosmosApp.Navigation.Pages.Events, navController)
+                            },
+                        )
                     }
                 }
                 it.page.discoveryCards.run {

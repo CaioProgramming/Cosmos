@@ -5,6 +5,7 @@ import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -15,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.LinearProgressIndicator
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -24,7 +24,9 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.StrokeCap
+import androidx.compose.ui.geometry.CornerRadius
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import theme.CosmosApp
 
@@ -64,10 +66,11 @@ fun progressIndicators(
     currentPage: Int,
     modifier: Modifier,
     enableAutoSwipe: Boolean = false,
+    clearPreviousPage: Boolean = false,
     onFinishPageLoad: (Int) -> Unit,
     onSelectIndicator: (Int) -> Unit,
 ) {
-    fun isCurrentPage(index: Int) = currentPage == index
+    fun isCurrentPage(index: Int) = (currentPage == index)
 
     Row(
         horizontalArrangement = Arrangement.Start,
@@ -102,11 +105,9 @@ fun progressIndicators(
                     0f
                 }
 
-            LinearProgressIndicator(
+            LinearGradientProgress(
                 progress = animateProgress.value,
                 backgroundColor = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
-                color = MaterialTheme.colors.primary,
-                strokeCap = StrokeCap.Round,
                 modifier =
                     Modifier
                         .padding(1.dp)
@@ -122,5 +123,34 @@ fun progressIndicators(
                 onFinishPageLoad(index)
             }
         }
+    }
+}
+
+@Composable
+fun LinearGradientProgress(
+    progress: Float,
+    modifier: Modifier = Modifier,
+    backgroundColor: Color = MaterialTheme.colors.onBackground.copy(alpha = 0.5f),
+    gradientColors: List<Color> = CosmosApp.Colors.themeColors(),
+) {
+    val gradientBrush = Brush.horizontalGradient(colors = gradientColors)
+
+    Canvas(modifier = modifier) {
+        val width = size.width
+        val height = size.height
+
+        // Draw background
+        drawRoundRect(
+            color = backgroundColor,
+            size = size,
+            cornerRadius = CornerRadius(50f, 50f),
+        )
+
+        // Draw progress with gradient
+        drawRoundRect(
+            brush = gradientBrush,
+            size = size.copy(width = width * progress),
+            cornerRadius = CornerRadius(50f, 50f),
+        )
     }
 }

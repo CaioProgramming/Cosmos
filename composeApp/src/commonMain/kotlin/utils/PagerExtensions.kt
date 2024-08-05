@@ -111,9 +111,7 @@ fun Modifier.pagerZoomTransition(pagerState: PagerState) =
     graphicsLayer {
         // Calculate the absolute offset for the current page from the
         // scroll position.
-        val page = pagerState.currentPage
-        val pageOffset = pagerState.getOffsetFractionForPage(page)
-        val targetValue = if (pageOffset < 0) 1.3f else 1f
+        val pageOffset = pagerState.currentPageOffsetFraction
 
         // Adjust the scale of the page based on its offset from the center
         val minScale = 1.85f
@@ -122,4 +120,31 @@ fun Modifier.pagerZoomTransition(pagerState: PagerState) =
 
         scaleX = scale
         scaleY = scale
+    }
+
+@Composable
+fun Modifier.pagerTransition(pagerState: PagerState) =
+    this.graphicsLayer {
+        // Calculate the absolute offset for the current page from the
+        // scroll position. We use the absolute value which allows us to mirror
+        // any effects for both directions
+        val pageOffset = pagerState.currentPageOffsetFraction.absoluteValue
+
+        // We animate the scaleX + scaleY, between 85% and 100%
+        lerp(
+            start = .5f,
+            stop = 1f,
+            fraction = 1f - pageOffset.coerceIn(0f, 1f),
+        ).also { scale ->
+            scaleX = scale
+            scaleY = scale
+        }
+
+        // We animate the alpha, between 50% and 100%
+        alpha =
+            lerp(
+                start = .2f,
+                stop = 1f,
+                fraction = 1f - pageOffset.coerceIn(0f, 1f),
+            )
     }

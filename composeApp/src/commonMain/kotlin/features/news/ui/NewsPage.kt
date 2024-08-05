@@ -130,6 +130,18 @@ fun NewsList(viewModel: NewsViewModel = koinInject()) {
                                 modifier = Modifier.fillMaxWidth().padding(Dimensions.padding16),
                             )
                         }
+                        AnimatedContent(page, transitionSpec = { slideInVertically() + fadeIn() with fadeOut() }) {
+                            Text(
+                                it.pages.first().description,
+                                style = MaterialTheme.typography.body1,
+                                maxLines = 5,
+                                modifier =
+                                    Modifier.fillMaxWidth().padding(
+                                        horizontal = Dimensions.padding16,
+                                        vertical = Dimensions.padding8,
+                                    ),
+                            )
+                        }
 
                         Button(
                             modifier = Modifier.fillMaxWidth().navigationBarsPadding(),
@@ -190,8 +202,8 @@ fun NewsList(viewModel: NewsViewModel = koinInject()) {
                         Box(Modifier.padding(Dimensions.padding16).size(32.dp))
                     }
                 }
-
-                else -> CosmosApp.Resources.animatedIcon(modifier = Modifier.align(Alignment.Center))
+                NewsState.Loading -> CosmosApp.Resources.animatedIcon(modifier = Modifier.align(Alignment.Center))
+                else -> Box {}
             }
         }
     }

@@ -21,6 +21,16 @@
         "Hora da aproximação: 21:00 UTC",
         "Distância entre a Lua e Saturno: 3.5°"
       ]
+    },
+    {
+      "title": "Primeira superlua de 2024",
+      "description": "Um evento fascinante que ocorre quando a Lua se encontra no ponto mais próximo da Terra em sua órbita, conhecido como perigeu. Durante esse período, a Lua pode parecer até 14% maior e 30% mais brilhante do que uma lua cheia comum.",
+      "date": "2024-08-19",
+      "visiblePlaces": ["BR", "COL", "URU"],
+      "thumbnailURL": "https://www.tupi.fm/wp-content/uploads/2024/08/fabian-oelkers-e9rkZKjdlSc-unsplash.jpg",
+      "extraInfo": [
+        "Hora da aproximação: 21:00 UTC"
+      ]
     }
   ]
 }

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -37,7 +36,6 @@ import features.education.ui.components.PlanetInfos
 import features.education.ui.components.PlanetItem
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import theme.CosmosApp
 import theme.Dimensions
 import utils.glow
 import utils.pagerCubeInScalingTransition
@@ -51,11 +49,11 @@ fun PlanetsView(
     val coroutineScope: CoroutineScope = rememberCoroutineScope()
     val maxDistance = planets.maxOf { it.earthDistance }
     val maxSunDistance = planets.maxOf { it.sunDistance }
+    val minSunDistance = planets.minOf { it.sunDistance }
     val pagerState = rememberPagerState(pageCount = { planets.size })
     val currentPlanet = planets[pagerState.currentPage]
     val backgroundAlpha = 1f - pagerState.currentPageOffsetFraction.absoluteValue
-    val planetColor =
-        animateColorAsState(currentPlanet.planetColor.toComposeColor().copy(backgroundAlpha)).value
+    val planetColor = animateColorAsState(currentPlanet.color.toComposeColor().copy(backgroundAlpha)).value
     val background =
         Brush.verticalGradient(
             listOf(
@@ -70,11 +68,11 @@ fun PlanetsView(
             currentIndex = pagerState.currentPage,
             arcRange = -100f,
             modifier =
-            Modifier
-                .padding(Dimensions.padding16)
-                .fillMaxWidth()
-                .wrapContentHeight(align = Alignment.CenterVertically)
-                .align(Alignment.CenterHorizontally),
+                Modifier
+                    .padding(Dimensions.padding16)
+                    .fillMaxWidth()
+                    .wrapContentHeight(align = Alignment.CenterVertically)
+                    .align(Alignment.CenterHorizontally),
             onRequestPage = {
                 coroutineScope.launch {
                     pagerState.animateScrollToPage(it)
@@ -87,14 +85,14 @@ fun PlanetsView(
             val rotationAnimation by animateFloatAsState(
                 targetValue = targetRotation,
                 animationSpec =
-                infiniteRepeatable(
-                    animation =
-                    tween(
-                        durationMillis = 10000,
-                        easing = LinearEasing,
+                    infiniteRepeatable(
+                        animation =
+                            tween(
+                                durationMillis = 10000,
+                                easing = LinearEasing,
+                            ),
+                        repeatMode = RepeatMode.Reverse,
                     ),
-                    repeatMode = RepeatMode.Reverse,
-                ),
             )
             val planet = planets[it]
             PlanetItem(
@@ -112,29 +110,23 @@ fun PlanetsView(
         }
 
         PlanetInfos(
-            currentPlanet.description,
-            currentPlanet.earthDistance,
-            currentPlanet.sunDistance,
-            currentPlanet.temperature,
-            currentPlanet.yearDuration,
-            currentPlanet.rotationSpeed,
-            maxDistance,
-            maxSunDistance,
-            planetColor,
+            planet = currentPlanet,
+            maxDistance = maxDistance,
+            sunMinDistance = minSunDistance,
             modifier =
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = Dimensions.padding16)
-                .background(
-                    brush =
-                    Brush.verticalGradient(
-                        listOf(
-                            Color.Transparent,
-                            MaterialTheme.colors.surface.copy(alpha = 0.5f),
-                            Color.Transparent,
-                        ),
-                    ),
-                ).padding(Dimensions.padding16),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(vertical = Dimensions.padding16)
+                    .background(
+                        brush =
+                            Brush.verticalGradient(
+                                listOf(
+                                    Color.Transparent,
+                                    MaterialTheme.colors.surface.copy(alpha = 0.5f),
+                                    Color.Transparent,
+                                ),
+                            ),
+                    ).padding(Dimensions.padding16),
         )
         onUpdateTitle(currentPlanet.title)
     }

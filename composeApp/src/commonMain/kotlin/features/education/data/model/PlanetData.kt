@@ -1,9 +1,5 @@
 package features.education.data.model
 
-import androidx.compose.ui.graphics.Color
-import com.chrynan.colors.compose.toComposeColor
-import com.chrynan.colors.extension.AliceBlue
-import com.chrynan.colors.extension.AquaBlue
 import com.chrynan.colors.extension.CornflowerBlue
 import com.chrynan.colors.extension.ForestGreen
 import com.chrynan.colors.extension.IndianRed
@@ -31,18 +27,19 @@ data class PlanetData(
     val title: String,
     val description: String,
     val earthDistance: Float,
-    val sunDistance : Float,
+    val sunDistance: Float,
     val temperature: Float,
     val yearDuration: Int,
     val resource: String,
     val rotationSpeed: Float,
+    val gravity: Float,
 ) {
     val planetVector = PlanetResource.entries.first { it.name.equals(resource, true) }
-    val planetColor = planetVector.getColor()
+    val color = planetVector.getColor()
 }
 
-private fun PlanetResource.getColor(): com.chrynan.colors.Color {
-    return when(this) {
+private fun PlanetResource.getColor(): com.chrynan.colors.Color =
+    when (this) {
         MERCURY -> com.chrynan.colors.Color.RebeccaPurple
         VENUS -> com.chrynan.colors.Color.OrangeRed
         EARTH -> com.chrynan.colors.Color.ForestGreen
@@ -52,10 +49,10 @@ private fun PlanetResource.getColor(): com.chrynan.colors.Color {
         URANUS -> com.chrynan.colors.Color.Purple
         NEPTUNE -> com.chrynan.colors.Color.CornflowerBlue
     }
-}
 
-
-enum class PlanetResource(val resource: DrawableResource = Res.drawable.moon_24) {
+enum class PlanetResource(
+    val resource: DrawableResource = Res.drawable.moon_24,
+) {
     MERCURY(Res.drawable.mercury),
     VENUS(Res.drawable.venus),
     EARTH(Res.drawable.earth_ic),
@@ -65,7 +62,3 @@ enum class PlanetResource(val resource: DrawableResource = Res.drawable.moon_24)
     URANUS(Res.drawable.uranus),
     NEPTUNE(Res.drawable.neptune),
 }
-
-
-
-

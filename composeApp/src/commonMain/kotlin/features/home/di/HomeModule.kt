@@ -1,8 +1,8 @@
 package features.home.di
 
 import androidx.compose.runtime.Composable
-import features.home.data.service.HomeMockService
 import features.home.data.service.HomeService
+import features.home.data.service.HomeServiceImpl
 import features.home.data.usecase.HomeUseCase
 import features.home.data.usecase.HomeUseCaseImpl
 import features.home.presentation.HomeViewModel
@@ -12,7 +12,7 @@ object HomeModule {
     @Composable
     fun modules() =
         module {
-            factory<HomeService> { HomeMockService(get()) }
+            factory<HomeService> { HomeServiceImpl() }
             factory<HomeUseCase> { HomeUseCaseImpl(homeService = get()) }
 
             factory { HomeViewModel(get()) }

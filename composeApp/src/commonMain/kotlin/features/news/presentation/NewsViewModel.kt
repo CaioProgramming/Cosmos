@@ -8,10 +8,10 @@ import kotlinx.coroutines.IO
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.launch
 
-class NewsViewModel(val newUseCase: NewsUseCase) : ViewModel() {
-
+class NewsViewModel(
+    val newUseCase: NewsUseCase,
+) : ViewModel() {
     val state = MutableStateFlow<NewsState?>(null)
-
 
     fun fetchNews() {
         viewModelScope.launch(Dispatchers.IO) {
@@ -19,6 +19,18 @@ class NewsViewModel(val newUseCase: NewsUseCase) : ViewModel() {
             try {
                 val news = newUseCase.getNews()
                 state.emit(NewsState.Success(news.success.data))
+            } catch (e: Exception) {
+                state.value = NewsState.Error
+            }
+        }
+    }
+
+    fun fetchNew(id: String) {
+        viewModelScope.launch(Dispatchers.IO) {
+            state.value = NewsState.Loading
+            try {
+                val news = newUseCase.getNew(id)
+                state.emit(NewsState.DetailSuccess(news.success.data))
             } catch (e: Exception) {
                 state.value = NewsState.Error
             }

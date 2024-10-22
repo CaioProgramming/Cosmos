@@ -10,7 +10,7 @@ import io.ktor.util.logging.KtorSimpleLogger
 import kotlinx.serialization.json.Json
 
 abstract class BaseService {
-    abstract val serviceURL: String
+    open val serviceURL: String = GIT_URL_PATH
     val client =
         HttpClient {
             install(ContentNegotiation) {
@@ -72,3 +72,5 @@ sealed class ServiceResult<out L, out R> {
     val success get() = this as Success
     val error get() = this as Error
 }
+
+const val GIT_URL_PATH = "https://caioprogramming.github.io/CosmosApp/resources/"
